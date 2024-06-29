@@ -1,22 +1,41 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
+import { Image, StyleSheet, Platform, Button } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
+import  ImageSelector from '@/components/ImageSelector';
 import { ThemedView } from '@/components/ThemedView';
+import React, { useState } from 'react';
 
-export default function HomeScreen() {
+
+
+
+export default function PostScreen()  {
+  const [postText, setPostText] = useState<string>('');
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
+
+  const handleImageSelected = (uri: string) => {
+    setImageUri(uri);
+  };
+
+  const handlePost = () => {
+    console.log('Posting with text:', postText, 'and image:', imageUri);
+  };
+
+
   return (
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Post</ThemedText>
-        <HelloWave />
+        {/* <ImageSelector onImageSelected={handleImageSelected} /> */}
+        <Button title="Post" onPress={handlePost} />
       </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     gap: 8,
   },
