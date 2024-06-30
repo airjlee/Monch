@@ -27,7 +27,7 @@ export default function PostScreen()  {
   return (
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Post</ThemedText>
-        {/* <ImageSelector onImageSelected={handleImageSelected} /> */}
+        <ImageSelector onImageSelected={handleImageSelected} />
         <Button title="Post" onPress={handlePost} />
       </ThemedView>
   );

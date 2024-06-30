@@ -10,14 +10,14 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelected }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const selectImage = async () => {
-    // Request permission
+    // req permission
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       alert('Sorry, we need camera roll permissions to make this work!');
       return;
     }
 
-    // Launch image library
+    // images
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -25,6 +25,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelected }) => {
       quality: 1,
     });
 
+    //cancel
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       onImageSelected(result.assets[0].uri);
