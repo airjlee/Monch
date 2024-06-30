@@ -19,8 +19,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#38C363"
+      },
+      "package": "com.airjlee.monch"
     },
     "web": {
       "bundler": "metro",
