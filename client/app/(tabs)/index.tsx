@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontWeight: 'bold',
+    
   },
   postImage: {
     width: '100%',

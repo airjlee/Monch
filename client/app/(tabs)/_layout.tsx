@@ -30,6 +30,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'camera' : 'camera-outline'} color={color} />
           ),
+          // tabBarStyle: { display: "none" } // remove nav
         }}
       />
       <Tabs.Screen

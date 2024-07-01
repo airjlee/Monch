@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Button, Modal } from 'react-native';
+import { StyleSheet, Button, Modal, TextInput } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import ImageSelector from '@/components/ImageSelector';
 import { ThemedView } from '@/components/ThemedView';
@@ -19,7 +19,6 @@ export default function PostScreen() {
     React.useCallback(() => {
       setShowCamera(true);
 
-      // Optional: Clean up function
       return () => {
         setShowCamera(false);
         setImageUri(null);
@@ -43,15 +42,22 @@ export default function PostScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Post</ThemedText>
-      
+
+
       <Button title="Take Photo" onPress={() => setShowCamera(true)} />
       <ImageSelector onImageSelected={handleImageSelected} />
-      
-      {imageUri && (
+
+      {/* {imageUri && (
         <ThemedText>Image selected: {imageUri}</ThemedText>
-      )}
-      
+      )} */}
+
+      <TextInput
+        style={styles.textInput}
+        placeholder="Enter caption..."
+        value={postText}
+        onChangeText={setPostText}
+      />
+
       <Button title="Post" onPress={handlePost} />
 
       <Modal visible={showCamera} animationType="slide">
@@ -67,5 +73,13 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  textInput: {
+    width: '100%',
+    padding: 8,
+    marginBottom: 16,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 4,
   },
 });
