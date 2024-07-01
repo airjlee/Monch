@@ -55,7 +55,7 @@ const PostItem: React.FC<Post> = ({ username, imageUrl, content }) => (
   </View>
 );
 
-function HomeScreen(): React.JSX.Element {
+export default function HomeScreen(): React.JSX.Element {
   return (
     <ThemedView style={styles.container}>
       <FlatList
@@ -118,5 +118,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default HomeScreen;
