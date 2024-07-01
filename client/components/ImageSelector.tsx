@@ -9,6 +9,10 @@ interface ImageSelectorProps {
 const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelected }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  // useEffect(() =>{
+  //   selectImage();
+  // }, []);
+
   const selectImage = async () => {
     // req permission
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
