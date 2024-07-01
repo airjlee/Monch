@@ -51,7 +51,7 @@ export default function PostScreen() {
       content: postText
     }
    
-    //save post
+    //save post to server
   };
 
   return (

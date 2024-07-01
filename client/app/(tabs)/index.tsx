@@ -5,9 +5,8 @@ import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 
 
-
 // dummy post array to intitially represent posts
-// next steps is to get passed in the posts from the post tab
+// we will write a fetch from server to get actual posts
 const posts: Post[] = [
   {
     id: '1',
