@@ -38,8 +38,8 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelected }) => {
 
   return (
     <View>
+      {/* {selectedImage && <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />} */}
       <Button title="Select Image" onPress={selectImage} />
-      {selectedImage && <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />}
     </View>
   );
 };

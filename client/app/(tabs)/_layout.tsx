@@ -1,12 +1,18 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
+import React, { useState } from 'react';
+import { Post } from '@/components/Post';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+
 export default function TabLayout() {
+  const [posts, setPosts] = useState<Post[]>([]);
   const colorScheme = useColorScheme();
+
+  const handlePost = (p : Post ) => {
+    setPosts(posts.concat([p]));
+  }
 
   return (
     <Tabs
@@ -30,8 +36,10 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'camera' : 'camera-outline'} color={color} />
           ),
+    
           // tabBarStyle: { display: "none" } // remove nav
         }}
+        // initialParams={{ handlePost }}
       />
       <Tabs.Screen
         name="explore"

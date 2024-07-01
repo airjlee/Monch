@@ -2,13 +2,9 @@ import React from 'react';
 import { FlatList, StyleSheet, View, Image } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Post } from '@/components/Post';
 
-type Post = {
-  id: string;
-  username: string;
-  imageUrl: string;
-  content: string;
-};
+
 
 // dummy post array to intitially represent posts
 // next steps is to get passed in the posts from the post tab
