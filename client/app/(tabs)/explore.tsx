@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Platform, TouchableOpacity} from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
@@ -7,11 +7,17 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
+import { Link } from 'expo-router';
+
 export default function TabTwoScreen() {
   return (
     <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Profile</ThemedText>
-      </ThemedView>
+      <Link href="/profile" asChild>
+        <TouchableOpacity>
+          <ThemedText type="title">Profile</ThemedText>
+        </TouchableOpacity>
+      </Link>
+    </ThemedView>
   );
 }
 
