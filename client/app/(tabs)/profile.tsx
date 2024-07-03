@@ -1,7 +1,9 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, ScrollView } from "react-native";
+import React, { useState } from 'react';
 import { Post } from '@/components/Post';
 import { Feather } from '@expo/vector-icons';
 import { ThemedView } from '@/components/ThemedView';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 const DanielLePFP = require('../../assets/images/danielpfp.jpg');
@@ -37,13 +39,56 @@ const posts: Post[] = [
   ];
 
 export default function Profile() {
-    const renderPostItem = ( { item }: { item: Post } ) => (
+    const insets = useSafeAreaInsets(); // allows for dynamic positioning on different devices based on different notches
+    const insetsStyles = {
+        closeButton: {
+            ...styles.closeButton,
+            top: insets.top,
+        },
+        modalContent: {
+            ...styles.modalContent,
+            marginTop: insets.top + 50,
+        },
+    };
+
+    const [selectedPost, setSelectedPost] = useState<Post|null>(null);
+
+    const renderPostItem = ({ item }: { item: Post }) => (
         <TouchableOpacity 
             style={styles.postItem}
-            onPress={() => handlePostPress(item.id)}
-        >
+            onPress={() => setSelectedPost(item)}>
             <Image source={{ uri: item.imageUrl }} style={styles.postImage} />
         </TouchableOpacity>
+    );
+
+    // when post is selected, opens up the individual post page
+    const renderPostModal = () => (
+        <Modal
+            visible={selectedPost !== null}
+            animationType="slide"
+            transparent={false} // makes it full the whole background
+            onRequestClose={() => setSelectedPost(null)} // enables the back button on android
+            >
+            <View style={styles.modalContainer}>
+                <TouchableOpacity 
+                    style={insetsStyles.closeButton}
+                    onPress={() => setSelectedPost(null)}
+                >
+                    <Feather name="x" size={24} color="#333" />
+                </TouchableOpacity>
+                <ScrollView style={insetsStyles.modalContent}>
+                    {selectedPost && (
+                        <>
+                            <Image source={{ uri: selectedPost.imageUrl }} style={styles.modalImage} />
+                            <View style={styles.modalTextContent}>
+                                <Text style={styles.modalUsername}>{selectedPost.username}</Text>
+                                <Text style={styles.modalPostContent}>{selectedPost.content}</Text>
+                            </View>
+                        </>
+                    )}
+                </ScrollView>
+            </View>
+        </Modal>
     );
 
     return (
@@ -75,13 +120,9 @@ export default function Profile() {
                 columnWrapperStyle={styles.postRow}
                 contentContainerStyle={styles.postContainer}
             />
+            {renderPostModal()}
         </ThemedView>
     );
-};
-
-// opens up post page
-const handlePostPress = (itemID: string) => {
-
 };
 
 const styles = StyleSheet.create({
@@ -143,5 +184,35 @@ const styles = StyleSheet.create({
     },
     postContainer: {
         marginHorizontal: -1,
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    closeButton: {
+        position: 'absolute',
+        right: 10,
+        top: 10,
+        zIndex: 1,
+        padding: 10,
+    },
+    modalContent: {
+        flex: 1,
+        marginTop: 50,
+    },
+    modalImage: {
+        width: '100%',
+        aspectRatio: 1,
+    },
+    modalTextContent: {
+        padding: 15,
+    },
+    modalUsername: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    modalPostContent: {
+        fontSize: 14,
     },
 });
