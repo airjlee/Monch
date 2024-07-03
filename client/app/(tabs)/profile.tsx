@@ -1,6 +1,10 @@
-import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { Post } from '@/components/Post';
 import { Feather } from '@expo/vector-icons';
+import { ThemedView } from '@/components/ThemedView';
+
+
+const DanielLePFP = require('../../assets/images/danielpfp.jpg');
 
 
 // dummy post array to intitially represent posts
@@ -43,10 +47,10 @@ export default function Profile() {
     );
 
     return (
-        <ScrollView style={styles.container}>
+        <ThemedView style={styles.container}>
             <View style={styles.profileHeader}>
                 <Image
-                    source={{ uri: './assets/images/danielpfp.jpg' }}
+                    source={DanielLePFP}
                     style={styles.profileImage}
                 />
                 <Text style={styles.profileName}>Daniel Le</Text>
@@ -71,7 +75,7 @@ export default function Profile() {
                 columnWrapperStyle={styles.postRow}
                 contentContainerStyle={styles.postContainer}
             />
-        </ScrollView>
+        </ThemedView>
     );
 };
 
