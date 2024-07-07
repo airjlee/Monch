@@ -28,19 +28,8 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 5,
         marginTop: -12,
-        borderBottomWidth: 5,
-        borderBottomColor: '#fff',
-        ...Platform.select({
-            ios: {
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.1,
-                shadowRadius: 2,
-            },
-            android: {
-                elevation: 4,
-            },
-        }),
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
     },
     searchInputWrapper: {
         flexDirection: 'row',
@@ -49,6 +38,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginRight: 20,
         marginLeft: 20,
+        marginBottom: 10,
         padding: 10,
         ...Platform.select({
             ios: {
