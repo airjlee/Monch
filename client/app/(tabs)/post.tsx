@@ -83,7 +83,7 @@ export default function PostScreen() {
 
       <Button title="Post" onPress={handlePost} />
 
-      <Modal visible={showCamera} animationType="slide">
+      <Modal visible={showCamera} animationType="none">
         <Camera onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />
       </Modal>
     </ThemedView>

@@ -1,8 +1,9 @@
-import React from 'react';
-import { FlatList, StyleSheet, View, Image } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
+import { SearchBar } from '@/components/SearchBar';
 
 
 // dummy post array to intitially represent posts
@@ -34,6 +35,8 @@ const posts: Post[] = [
   },
 ];
 
+
+
 const PostItem: React.FC<Post> = ({ username, imageUrl, content }) => (
   <View style={styles.post}>
     <View style={styles.postHeader}>
@@ -51,28 +54,42 @@ const PostItem: React.FC<Post> = ({ username, imageUrl, content }) => (
 );
 
 export default function HomeScreen(): React.JSX.Element {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    // Implement search logic here
+  };
+
   return (
-    <ThemedView style={styles.container}>
-      <FlatList
-        data={posts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <PostItem
-            id={item.id}
-            username={item.username}
-            imageUrl={item.imageUrl}
-            content={item.content}
-          />
-        )}
-        contentContainerStyle={styles.postsContainer}
-      />
-    </ThemedView>
+    <SafeAreaView style={styles.safeArea}>
+      <ThemedView style={styles.container}>
+        <SearchBar value={searchQuery} onChangeText={handleSearch} />
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <PostItem
+              id={item.id}
+              username={item.username}
+              imageUrl={item.imageUrl}
+              content={item.content}
+            />
+          )}
+          contentContainerStyle={styles.postsContainer}
+        />
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
-    flex: 1, 
+    flex: 1,
     backgroundColor: '#fff',
   },
   postsContainer: {
@@ -101,7 +118,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontWeight: 'bold',
-    
+
   },
   postImage: {
     width: '100%',
