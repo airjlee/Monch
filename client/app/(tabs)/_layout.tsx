@@ -29,7 +29,17 @@ export default function TabLayout() {
           ),
         }}
       />
+     
       <Tabs.Screen
+        name="explore"
+        options={{
+          title: 'Explore',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
+       <Tabs.Screen
         name="post"
         options={{
           title: 'Post',
@@ -41,15 +51,7 @@ export default function TabLayout() {
         }}
         // initialParams={{ handlePost }}
       />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
+      
       <Tabs.Screen
         name="profile"
         options={{
