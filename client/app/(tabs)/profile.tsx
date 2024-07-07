@@ -1,12 +1,43 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, ScrollView } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, ScrollView} from "react-native";
 import React, { useState } from 'react';
 import { Post } from '@/components/Post';
 import { Feather } from '@expo/vector-icons';
 import { ThemedView } from '@/components/ThemedView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {UserProfile} from "@/components/UserProfile";
+import {Picker} from "@react-native-picker/picker";
 
 
 const DanielLePFP = require('../../assets/images/danielpfp.jpg');
+
+// dummy post array to intitially represent posts
+// we will write a fetch from server to get actual posts
+const profiles: UserProfile[] = [
+    {
+        username: 'airjlee',
+        imageUrl: 'https://via.placeholder.com/350x150',
+        bio: 'fire food',
+        location: 'seattle'
+    },
+    {
+        username: 'hemkeshb',
+        imageUrl: 'https://via.placeholder.com/350x150',
+        bio: 'fire food',
+        location: 'seattle'
+    },
+    {
+        username: 'alexshuozeng',
+        imageUrl: 'https://via.placeholder.com/350x150',
+        bio: 'fire food',
+        location: 'seattle'
+    },
+    {
+        username: 'ledaniel',
+        imageUrl: require('../../assets/images/danielpfp.jpg'),
+        bio: 'Sum calm.',
+        location: 'Seattle, WA'
+    },
+   ];
 
 
 // dummy post array to intitially represent posts
@@ -53,6 +84,16 @@ export default function Profile() {
 
     const [selectedPost, setSelectedPost] = useState<Post|null>(null);
 
+    // select initial post
+    const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+
+    const handleProfileChange = (username: string) => {
+        const newProfile = profiles.find(profile => profile.username === username);
+        if (newProfile) {
+            setSelectedProfile(newProfile);
+        }
+    };
+
     const renderPostItem = ({ item }: { item: Post }) => (
         <TouchableOpacity 
             style={styles.postItem}
@@ -91,19 +132,32 @@ export default function Profile() {
         </Modal>
     );
 
+
     return (
         <ThemedView style={styles.container}>
+            {/* Profile Selector */}
+            <Picker
+                selectedValue={selectedProfile.username}
+                onValueChange={(itemValue: string) => handleProfileChange(itemValue)}
+                style={styles.picker}
+            >
+                {profiles.map(profile => (
+                    <Picker.Item key={profile.username} label={profile.username} value={profile.username} />
+                ))}
+            </Picker>
             <View style={styles.profileHeader}>
                 <Image
-                    source={DanielLePFP}
+                    source={  typeof selectedProfile.imageUrl === 'string'
+                        ? { uri: selectedProfile.imageUrl } // For remote images
+                        : selectedProfile.imageUrl} // For local images (require)}
                     style={styles.profileImage}
                 />
-                <Text style={styles.profileName}>Daniel Le</Text>
+                <Text style={styles.profileName}>{selectedProfile.username}</Text>
             </View>
             <View style={styles.profileDetails}>
-                <Text style={styles.detailsText}>Sum calm.</Text>
+                <Text style={styles.detailsText}>{selectedProfile.bio}</Text>
                 <Text style={styles.detailsTitle}>Location:</Text>
-                <Text style={styles.detailsText}>Seattle, WA</Text>
+                <Text style={styles.detailsText}>{selectedProfile.location}</Text>
             </View>
             
             <View style={styles.sortContainer}> 
@@ -214,5 +268,10 @@ const styles = StyleSheet.create({
     },
     modalPostContent: {
         fontSize: 14,
+    },
+    picker: {
+        height: 50,
+        width: '100%',
+        marginBottom: 20,
     },
 });
