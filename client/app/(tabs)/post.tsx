@@ -44,12 +44,12 @@ export default function PostScreen() {
 
   const handlePost = () => {
     console.log('Posting with text:', postText, 'and image:', imageUri);
-    const p: Post = {
-      id: "",
-      username: "unknownUser",
-      imageUrl: imageUri === null ? "" : imageUri,
-      content: postText
-    }
+    // const p: Post = {
+    //   id: "",
+    //   username: "unknownUser",
+    //   imageUrl: imageUri === null ? "" : imageUri,
+    //   content: postText
+    // }
    
     //save post to server
   };
@@ -93,7 +93,7 @@ export default function PostScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 50,
     alignItems: 'center',
 
   },

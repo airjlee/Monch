@@ -80,6 +80,7 @@ export default function HomeScreen(): React.JSX.Element {
         <SearchBar value={searchQuery} onChangeText={handleSearch} />
         <FlatList
           data={posts}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <PostItem
