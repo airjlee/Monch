@@ -12,43 +12,56 @@ const posts: Post[] = [
   {
     id: '1',
     username: 'airjlee',
+    rating: "",
+    restaurantName: "",
     imageUrl: 'https://via.placeholder.com/350x150',
-    content: 'fire food',
+    caption: 'fire food',
+
   },
   {
     id: '2',
     username: 'hemkeshb',
+    rating: "",
+    restaurantName: "",
     imageUrl: 'https://via.placeholder.com/350x150',
-    content: 'this was gasssss',
+    caption: 'this was gasssss',
   },
   {
     id: '3',
     username: 'alexshuozeng',
+    rating: "",
+    restaurantName: "",
     imageUrl: 'https://via.placeholder.com/350x150',
-    content: 'ts hitttt',
+    caption: 'ts hitttt',
   },
   {
     id: '4',
     username: 'ledaniel',
+    rating: "",
+    restaurantName: "",
     imageUrl: 'https://via.placeholder.com/350x150',
-    content: 'yummy',
+    caption: 'yummy',
   },
 ];
 
 
 
-const PostItem: React.FC<Post> = ({ username, imageUrl, content }) => (
+const PostItem: React.FC<Post> = ({ username, imageUrl, caption, rating, restaurantName }) => (
   <View style={styles.post}>
     <View style={styles.postHeader}>
       <Image
         source={{ uri: 'https://via.placeholder.com/40' }}
         style={styles.avatar}
       />
-      <ThemedText style={styles.username}>{username}</ThemedText>
+      <View style={styles.headerText}>
+        <ThemedText style={styles.username}>{username}</ThemedText>
+        <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
+      </View>
     </View>
     <Image source={{ uri: imageUrl }} style={styles.postImage} />
     <View style={styles.postContent}>
-      <ThemedText style={styles.postText}>{content}</ThemedText>
+      <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
+      <ThemedText style={styles.postText}>{caption}</ThemedText>
     </View>
   </View>
 );
@@ -73,7 +86,9 @@ export default function HomeScreen(): React.JSX.Element {
               id={item.id}
               username={item.username}
               imageUrl={item.imageUrl}
-              content={item.content}
+              caption={item.caption}
+              rating={item.rating}
+              restaurantName={item.restaurantName}
             />
           )}
           contentContainerStyle={styles.postsContainer}
@@ -129,5 +144,17 @@ const styles = StyleSheet.create({
   },
   postText: {
     fontSize: 16,
+  },
+  headerText: {
+    flex: 1,
+  },
+  restaurantName: {
+    fontSize: 14,
+    color: '#666',
+  },
+  rating: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
 });

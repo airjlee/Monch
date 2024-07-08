@@ -46,26 +46,35 @@ const posts: Post[] = [
     {
       id: '1',
       username: 'airjlee',
+      rating: "",
+      restaurantName: "",
       imageUrl: 'https://via.placeholder.com/350x150',
-      content: 'fire food',
+      caption: 'fire food',
+  
     },
     {
       id: '2',
       username: 'hemkeshb',
+      rating: "",
+      restaurantName: "",
       imageUrl: 'https://via.placeholder.com/350x150',
-      content: 'this was gasssss',
+      caption: 'this was gasssss',
     },
     {
       id: '3',
       username: 'alexshuozeng',
+      rating: "",
+      restaurantName: "",
       imageUrl: 'https://via.placeholder.com/350x150',
-      content: 'ts hitttt',
+      caption: 'ts hitttt',
     },
     {
       id: '4',
       username: 'ledaniel',
+      rating: "",
+      restaurantName: "",
       imageUrl: 'https://via.placeholder.com/350x150',
-      content: 'yummy',
+      caption: 'yummy',
     },
   ];
 
@@ -107,9 +116,9 @@ export default function Profile() {
         <Modal
             visible={selectedPost !== null}
             animationType="slide"
-            transparent={false} // makes it full the whole background
-            onRequestClose={() => setSelectedPost(null)} // enables the back button on android
-            >
+            transparent={false}
+            onRequestClose={() => setSelectedPost(null)}
+        >
             <View style={styles.modalContainer}>
                 <TouchableOpacity 
                     style={insetsStyles.closeButton}
@@ -123,7 +132,9 @@ export default function Profile() {
                             <Image source={{ uri: selectedPost.imageUrl }} style={styles.modalImage} />
                             <View style={styles.modalTextContent}>
                                 <Text style={styles.modalUsername}>{selectedPost.username}</Text>
-                                <Text style={styles.modalPostContent}>{selectedPost.content}</Text>
+                                <Text style={styles.modalRestaurantName}>{selectedPost.restaurantName}</Text>
+                                <Text style={styles.modalRating}>Rating: {selectedPost.rating}</Text>
+                                <Text style={styles.modalCaption}>{selectedPost.caption}</Text>
                             </View>
                         </>
                     )}
@@ -262,11 +273,21 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     modalUsername: {
+        fontSize: 18,
         fontWeight: 'bold',
-        fontSize: 16,
         marginBottom: 5,
     },
-    modalPostContent: {
+    modalRestaurantName: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginBottom: 5,
+    },
+    modalRating: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 10,
+    },
+    modalCaption: {
         fontSize: 14,
     },
     picker: {

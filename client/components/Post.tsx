@@ -4,8 +4,10 @@ import { View, Image, Text, StyleSheet, ScrollView } from 'react-native';
 export type Post = {
     id: string;
     username: string;
+    rating: string;
+    restaurantName: string;
     imageUrl: string;
-    content: string;
+    caption: string;
 };
 
 type PostPageProps = {
@@ -24,7 +26,9 @@ const PostPage: React.FC<PostPageProps> = ({ route }) => {
       <Image source={{ uri: post.imageUrl }} style={styles.image} />
       <View style={styles.contentContainer}>
         <Text style={styles.username}>{post.username}</Text>
-        <Text style={styles.content}>{post.content}</Text>
+        <Text style={styles.restaurantName}>{post.restaurantName}</Text>
+        <Text style={styles.rating}>Rating: {post.rating}</Text>
+        <Text style={styles.caption}>{post.caption}</Text>
       </View>
     </ScrollView>
   );
@@ -47,7 +51,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-  content: {
+  restaurantName: {
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 5,
+  },
+  rating: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 10,
+  },
+  caption: {
     fontSize: 14,
   },
 });
