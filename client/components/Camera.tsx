@@ -54,10 +54,12 @@ export default function Camera({ onCapture, onClose }: CameraProps) {
   };
 
   const takePhoto = async () => {
-    if (cameraRef.current) {
-      const photo = await cameraRef.current.takePictureAsync();
-      onCapture(photo.uri);
-    }
+    console.log("ba");
+    onCapture("null");
+    // if (cameraRef.current) {
+    //   const photo = await cameraRef.current.takePictureAsync();
+    //   onCapture(photo.uri);
+    // }
   };
 
   return (

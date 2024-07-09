@@ -40,7 +40,7 @@ export default function TabLayout() {
         }}
       />
        <Tabs.Screen
-        name="post"
+        name="new_post"
         options={{
           title: 'Post',
           tabBarIcon: ({ color, focused }) => (
