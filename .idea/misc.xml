@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/client/node_modules/@react-native-camera-roll/camera-roll/android" />
+    <file type="web" url="file://$PROJECT_DIR$/client/node_modules/@react-native/gradle-plugin" />
     <file type="web" url="file://$PROJECT_DIR$/client/node_modules/expo-dev-launcher/expo-dev-launcher-gradle-plugin" />
     <file type="web" url="file://$PROJECT_DIR$/client/node_modules/react-native-safe-area-context/android" />
   </component>
@@ -13,7 +14,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager">
+  <component name="ProjectRootManager" version="2" project-jdk-name="22" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
