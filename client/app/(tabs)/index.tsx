@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
+import { Link } from 'expo-router';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 // dummy post array to intitially represent posts
@@ -47,23 +49,30 @@ const posts: Post[] = [
 
 
 const PostItem: React.FC<Post> = ({ username, imageUrl, caption, rating, restaurantName }) => (
-  <View style={styles.post}>
-    <View style={styles.postHeader}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/40' }}
-        style={styles.avatar}
-      />
-      <View style={styles.headerText}>
-        <ThemedText style={styles.username}>{username}</ThemedText>
-        <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
+  // implement this
+    // <Link href={``} asChild>
+      
+    // </Link>
+
+    <TouchableOpacity>
+    <View style={styles.post}>
+      <View style={styles.postHeader}>
+        <Image
+          source={{ uri: 'https://via.placeholder.com/40' }}
+          style={styles.avatar}
+        />
+        <View style={styles.headerText}>
+          <ThemedText style={styles.username}>{username}</ThemedText>
+          <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
+        </View>
+      </View>
+      <Image source={{ uri: imageUrl }} style={styles.postImage} />
+      <View style={styles.postContent}>
+        <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
+        <ThemedText style={styles.postText}>{caption}</ThemedText>
       </View>
     </View>
-    <Image source={{ uri: imageUrl }} style={styles.postImage} />
-    <View style={styles.postContent}>
-      <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
-      <ThemedText style={styles.postText}>{caption}</ThemedText>
-    </View>
-  </View>
+    </TouchableOpacity>
 );
 
 export default function HomeScreen(): React.JSX.Element {
@@ -75,6 +84,7 @@ export default function HomeScreen(): React.JSX.Element {
   };
 
   return (
+    
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
         <SearchBar value={searchQuery} onChangeText={handleSearch} />
