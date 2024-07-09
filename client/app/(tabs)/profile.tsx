@@ -6,6 +6,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {UserProfile} from "@/components/UserProfile";
 import {Picker} from "@react-native-picker/picker";
+import ImageCarousel from '@/components/imageCarousel';
 
 
 const DanielLePFP = require('../../assets/images/danielpfp.jpg');
@@ -48,7 +49,10 @@ const posts: Post[] = [
       username: 'airjlee',
       rating: "",
       restaurantName: "",
-      imageUrl: 'https://via.placeholder.com/350x150',
+      images: [
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150'],
       caption: 'fire food',
   
     },
@@ -57,7 +61,10 @@ const posts: Post[] = [
       username: 'hemkeshb',
       rating: "",
       restaurantName: "",
-      imageUrl: 'https://via.placeholder.com/350x150',
+      images: [
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150'],
       caption: 'this was gasssss',
     },
     {
@@ -65,7 +72,10 @@ const posts: Post[] = [
       username: 'alexshuozeng',
       rating: "",
       restaurantName: "",
-      imageUrl: 'https://via.placeholder.com/350x150',
+      images: [
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150'],
       caption: 'ts hitttt',
     },
     {
@@ -73,7 +83,10 @@ const posts: Post[] = [
       username: 'ledaniel',
       rating: "",
       restaurantName: "",
-      imageUrl: 'https://via.placeholder.com/350x150',
+      images: [
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150',
+        'https://via.placeholder.com/350x150'],
       caption: 'yummy',
     },
   ];
@@ -107,7 +120,7 @@ export default function Profile() {
         <TouchableOpacity 
             style={styles.postItem}
             onPress={() => setSelectedPost(item)}>
-            <Image source={{ uri: item.imageUrl }} style={styles.postImage} />
+            <Image source={{ uri: item.images[0] }} style={styles.postImage} />
         </TouchableOpacity>
     );
 
@@ -129,7 +142,7 @@ export default function Profile() {
                 <ScrollView style={insetsStyles.modalContent}>
                     {selectedPost && (
                         <>
-                            <Image source={{ uri: selectedPost.imageUrl }} style={styles.modalImage} />
+                            <ImageCarousel images={selectedPost.images} />
                             <View style={styles.modalTextContent}>
                                 <Text style={styles.modalUsername}>{selectedPost.username}</Text>
                                 <Text style={styles.modalRestaurantName}>{selectedPost.restaurantName}</Text>

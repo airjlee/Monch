@@ -5,8 +5,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
 import { Link } from 'expo-router';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import ImageCarousel from '@/components/imageCarousel';
 
 // dummy post array to intitially represent posts
 // we will write a fetch from server to get actual posts
@@ -16,7 +15,10 @@ const posts: Post[] = [
     username: 'airjlee',
     rating: "",
     restaurantName: "",
-    imageUrl: 'https://via.placeholder.com/350x150',
+    images: [
+      'https://via.placeholder.com/350x150',
+      require('../../assets/images/danielpfp.jpg'),
+      'https://via.placeholder.com/350x150'],
     caption: 'fire food',
 
   },
@@ -25,7 +27,10 @@ const posts: Post[] = [
     username: 'hemkeshb',
     rating: "",
     restaurantName: "",
-    imageUrl: 'https://via.placeholder.com/350x150',
+    images: [
+      'https://via.placeholder.com/250x150',
+      'https://via.placeholder.com/350x150',
+      'https://via.placeholder.com/350x150'],
     caption: 'this was gasssss',
   },
   {
@@ -33,7 +38,10 @@ const posts: Post[] = [
     username: 'alexshuozeng',
     rating: "",
     restaurantName: "",
-    imageUrl: 'https://via.placeholder.com/350x150',
+    images: [
+      'https://via.placeholder.com/350x150',
+      'https://via.placeholder.com/350x150',
+      'https://via.placeholder.com/350x150'],
     caption: 'ts hitttt',
   },
   {
@@ -41,20 +49,20 @@ const posts: Post[] = [
     username: 'ledaniel',
     rating: "",
     restaurantName: "",
-    imageUrl: 'https://via.placeholder.com/350x150',
+    images: [
+      'https://via.placeholder.com/350x150',
+      'https://via.placeholder.com/350x150',
+      'https://via.placeholder.com/350x150'],
     caption: 'yummy',
   },
 ];
 
 
-
-const PostItem: React.FC<Post> = ({ username, imageUrl, caption, rating, restaurantName }) => (
+const PostItem: React.FC<Post> = ({ username, images, caption, rating, restaurantName }) => (
   // implement this
-    // <Link href={``} asChild>
+//     // <Link href={``} asChild>
       
-    // </Link>
-
-    <TouchableOpacity>
+//     // </Link>
     <View style={styles.post}>
       <View style={styles.postHeader}>
         <Image
@@ -66,13 +74,12 @@ const PostItem: React.FC<Post> = ({ username, imageUrl, caption, rating, restaur
           <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
         </View>
       </View>
-      <Image source={{ uri: imageUrl }} style={styles.postImage} />
+      <ImageCarousel images={images} />
       <View style={styles.postContent}>
         <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
         <ThemedText style={styles.postText}>{caption}</ThemedText>
       </View>
     </View>
-    </TouchableOpacity>
 );
 
 export default function HomeScreen(): React.JSX.Element {
@@ -96,7 +103,7 @@ export default function HomeScreen(): React.JSX.Element {
             <PostItem
               id={item.id}
               username={item.username}
-              imageUrl={item.imageUrl}
+              images={item.images}
               caption={item.caption}
               rating={item.rating}
               restaurantName={item.restaurantName}
