@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView, TouchableOpacity, Touchable, TouchableOpacityBase } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
 import { Link } from 'expo-router';
 import ImageCarousel from '@/components/imageCarousel';
+import PostModal from '@/components/individualPost'
 
 // dummy post array to intitially represent posts
 // we will write a fetch from server to get actual posts
@@ -14,10 +15,10 @@ const posts: Post[] = [
     id: '1',
     username: 'airjlee',
     rating: "",
-    restaurantName: "",
+    restaurantName: "isarn",
     images: [
       'https://via.placeholder.com/350x150',
-      require('../../assets/images/danielpfp.jpg'),
+      'https://via.placeholder.com/350x150',
       'https://via.placeholder.com/350x150'],
     caption: 'fire food',
 
@@ -57,41 +58,46 @@ const posts: Post[] = [
   },
 ];
 
-
-const PostItem: React.FC<Post> = ({ username, images, caption, rating, restaurantName }) => (
-  // implement this ?
-//     // <Link href={``} asChild>
-      
-//     // </Link>
-    <View style={styles.post}>
-      <View style={styles.postHeader}>
-        <Image
-          source={{ uri: 'https://via.placeholder.com/40' }}
-          style={styles.avatar}
-        />
-        <View style={styles.headerText}>
-          <ThemedText style={styles.username}>{username}</ThemedText>
-          <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
-        </View>
-      </View>
-      <ImageCarousel images={images} />
-      <View style={styles.postContent}>
-        <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
-        <ThemedText style={styles.postText}>{caption}</ThemedText>
+const PostItem: React.FC<Post & { onImagePress: (imageIndex: number) => void }> = 
+({ username, images, caption, rating, restaurantName, onImagePress }) => (
+  <View style={styles.post}>
+    <View style={styles.postHeader}>
+      <Image
+        source={{ uri: 'https://via.placeholder.com/40' }}
+        style={styles.avatar}
+      />
+      <View style={styles.headerText}>
+        <ThemedText style={styles.username}>{username}</ThemedText>
+        <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
       </View>
     </View>
+    <ImageCarousel
+      images={images}
+      onImagePress={onImagePress}
+    />
+    <View style={styles.postContent}>
+      <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
+      <ThemedText style={styles.postText}>{caption}</ThemedText>
+    </View>
+  </View>
 );
 
 export default function HomeScreen(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(0);
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
     // Implement search logic here
   };
 
+  const handleImagePress = (postIndex: number, imageIndex: number) => {
+    setSelectedPostIndex(postIndex);
+    setModalVisible(true);
+  };
+
   return (
-    
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
         <SearchBar value={searchQuery} onChangeText={handleSearch} />
@@ -99,17 +105,18 @@ export default function HomeScreen(): React.JSX.Element {
           data={posts}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <PostItem
-              id={item.id}
-              username={item.username}
-              images={item.images}
-              caption={item.caption}
-              rating={item.rating}
-              restaurantName={item.restaurantName}
+              {...item}
+              onImagePress={(imageIndex) => handleImagePress(index, imageIndex)}
             />
           )}
           contentContainerStyle={styles.postsContainer}
+        />
+        <PostModal
+          isVisible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          post={posts[selectedPostIndex]}
         />
       </ThemedView>
     </SafeAreaView>

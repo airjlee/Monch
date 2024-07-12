@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Image, StyleSheet, Dimensions, FlatList, ListRenderItemInfo } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, FlatList, ListRenderItemInfo, TouchableOpacity } from 'react-native';
 
 const { width: screenWidth } = Dimensions.get('window');
 const containerPadding = 16;
@@ -7,20 +7,21 @@ const carouselWidth = screenWidth - (containerPadding * 2);
 
 interface ImageCarouselProps {
   images: string[];
+  onImagePress: (index: number) => void;
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, onImagePress }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList<string>>(null);
 
-  const renderItem = ({ item }: ListRenderItemInfo<string>) => (
-    <View style={styles.imageContainer}>
+  const renderItem = ({ item, index }: ListRenderItemInfo<string>) => (
+    <TouchableOpacity activeOpacity={1} onPress={() => onImagePress(index)} style={styles.imageContainer}>
       <Image
         source={{ uri: item }}
         style={styles.image}
         resizeMode="cover"
       />
-    </View>
+    </TouchableOpacity>
   );
 
   // helps update activeIndex

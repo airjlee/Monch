@@ -1,12 +1,12 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, ScrollView} from "react-native";
 import React, { useState } from 'react';
-import { Post } from '@/components/Post';
+import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { Feather } from '@expo/vector-icons';
 import { ThemedView } from '@/components/ThemedView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {UserProfile} from "@/components/UserProfile";
 import {Picker} from "@react-native-picker/picker";
-import ImageCarousel from '@/components/imageCarousel';
+import PostModal from '@/components/individualPost';
+import { Post } from '@/components/Post';
 
 
 const DanielLePFP = require('../../assets/images/danielpfp.jpg');
@@ -91,8 +91,8 @@ const posts: Post[] = [
     },
   ];
 
-export default function Profile() {
-    const insets = useSafeAreaInsets(); // allows for dynamic positioning on different devices based on different notches
+  export default function Profile() {
+    const insets = useSafeAreaInsets();
     const insetsStyles = {
         closeButton: {
             ...styles.closeButton,
@@ -105,9 +105,8 @@ export default function Profile() {
     };
 
     const [selectedPost, setSelectedPost] = useState<Post|null>(null);
-
-    // select initial post
     const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleProfileChange = (username: string) => {
         const newProfile = profiles.find(profile => profile.username === username);
@@ -116,46 +115,23 @@ export default function Profile() {
         }
     };
 
+    const handlePostPress = (post: Post) => {
+        setSelectedPost(post);
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+        setSelectedPost(null);
+    };
+
     const renderPostItem = ({ item }: { item: Post }) => (
         <TouchableOpacity 
             style={styles.postItem}
-            onPress={() => setSelectedPost(item)}>
+            onPress={() => handlePostPress(item)}>
             <Image source={{ uri: item.images[0] }} style={styles.postImage} />
         </TouchableOpacity>
     );
-
-    // when post is selected, opens up the individual post page
-    const renderPostModal = () => (
-        <Modal
-            visible={selectedPost !== null}
-            animationType="slide"
-            transparent={false}
-            onRequestClose={() => setSelectedPost(null)}
-        >
-            <View style={styles.modalContainer}>
-                <TouchableOpacity 
-                    style={insetsStyles.closeButton}
-                    onPress={() => setSelectedPost(null)}
-                >
-                    <Feather name="x" size={24} color="#333" />
-                </TouchableOpacity>
-                <ScrollView style={insetsStyles.modalContent}>
-                    {selectedPost && (
-                        <>
-                            <ImageCarousel images={selectedPost.images} />
-                            <View style={styles.modalTextContent}>
-                                <Text style={styles.modalUsername}>{selectedPost.username}</Text>
-                                <Text style={styles.modalRestaurantName}>{selectedPost.restaurantName}</Text>
-                                <Text style={styles.modalRating}>Rating: {selectedPost.rating}</Text>
-                                <Text style={styles.modalCaption}>{selectedPost.caption}</Text>
-                            </View>
-                        </>
-                    )}
-                </ScrollView>
-            </View>
-        </Modal>
-    );
-
 
     return (
         <ThemedView style={styles.container}>
@@ -171,9 +147,9 @@ export default function Profile() {
             </Picker>
             <View style={styles.profileHeader}>
                 <Image
-                    source={  typeof selectedProfile.imageUrl === 'string'
-                        ? { uri: selectedProfile.imageUrl } // For remote images
-                        : selectedProfile.imageUrl} // For local images (require)}
+                    source={typeof selectedProfile.imageUrl === 'string'
+                        ? { uri: selectedProfile.imageUrl }
+                        : selectedProfile.imageUrl}
                     style={styles.profileImage}
                 />
                 <Text style={styles.profileName}>{selectedProfile.username}</Text>
@@ -190,7 +166,7 @@ export default function Profile() {
                 </TouchableOpacity>
             </View>
             
-            <FlatList // posts grid
+            <FlatList
                 data={posts}
                 renderItem={renderPostItem}
                 keyExtractor={item => item.id}
@@ -198,7 +174,11 @@ export default function Profile() {
                 columnWrapperStyle={styles.postRow}
                 contentContainerStyle={styles.postContainer}
             />
-            {renderPostModal()}
+            <PostModal
+                isVisible={isModalVisible}
+                onClose={handleCloseModal}
+                post={selectedPost}
+            />
         </ThemedView>
     );
 };
