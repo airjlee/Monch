@@ -14,12 +14,7 @@ export default function PostLayout() {
           title: 'New Post',
         }}
       />
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Camera',
-        }}
-      />
+      
     </Stack>
   );
 }

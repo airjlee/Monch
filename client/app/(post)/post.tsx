@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, Button, Modal, TextInput, Image } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import ImageSelector from '@/components/ImageSelector';
 import { useLocalSearchParams, useRouter, Link } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
-import Camera from '@/components/Camera';
-import { Post } from '@/components/Post';
 
 
 export default function PostScreen() {
@@ -22,20 +19,6 @@ export default function PostScreen() {
       setImageUri(capturedImageUri as string);
     }
   }, [capturedImageUri]);
-  // useFocusEffect(
-  //   React.useCallback(() => {
-      
-  //     router.push({
-  //       pathname: "/camera",
-  //     })
-  //     return () => {
-  
-  //       setImageUri(null);
-  //       setPostText('');
-  //       setRestaurantName('');
-  //     };
-  //   }, [])
-  // );
 
   const handleImageSelected = (uri: string) => {
     setImageUri(uri);
@@ -58,18 +41,15 @@ export default function PostScreen() {
     //save post to server
   };
 
+  // WILL REPLACE IMAGE SELECTOR WITH PAGE
   return (
     <ThemedView style={styles.container}>
 
 
       {imageUri !== null && <Image source={{ uri: imageUri }} style={{ width: 300, height: 300 }} />}
-      <ImageSelector onImageSelected={handleImageSelected} />
+      <ImageSelector onImageSelected={handleImageSelected} /> 
       <Button title="Take Photo" onPress={() => router.back()} />
       <Button title="Remove Photo" onPress={() => setImageUri(null)} />
-
-      {/* {imageUri && (
-        <ThemedText>Image selected: {imageUri}</ThemedText>
-      )} */}
 
       <TextInput
         style={styles.textInput}
@@ -89,11 +69,6 @@ export default function PostScreen() {
       <Link href={'/(tabs)'} asChild>
           <Button title="Back" />
       </Link>
-      {/* <Button title="Back" onPress={() => router.replace('/(tabs)')} /> */}
-
-      {/* <Modal visible={showCamera} animationType="none">
-        <Camera onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />
-      </Modal> */}
     </ThemedView>
   );
 }

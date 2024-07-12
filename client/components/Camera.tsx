@@ -2,6 +2,7 @@ import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
+import { router, useRouter } from 'expo-router';
 
 type CameraProps = {
   onCapture: (uri: string) => void;
@@ -9,6 +10,7 @@ type CameraProps = {
 };
 
 export default function Camera({ onCapture, onClose }: CameraProps) {
+  const router = useRouter();
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [mediaLibraryPermission, requestMediaLibraryPermission] = MediaLibrary.usePermissions();
@@ -50,6 +52,7 @@ export default function Camera({ onCapture, onClose }: CameraProps) {
   }
 
   const openCameraRoll = () => {
+    router.push("/(post)/post")
     console.log('Open camera roll');
   };
 
