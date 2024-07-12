@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { View, Image, StyleSheet, Dimensions, FlatList, ListRenderItemInfo } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window');
+const containerPadding = 16;
+const carouselWidth = screenWidth - (containerPadding * 2);
 
-// Define the props type
 interface ImageCarouselProps {
   images: string[];
 }
@@ -13,22 +14,45 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const flatListRef = useRef<FlatList<string>>(null);
 
   const renderItem = ({ item }: ListRenderItemInfo<string>) => (
-    <Image
-      source={{ uri: item }}
-      style={styles.image}
-    />
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item }}
+        style={styles.image}
+        resizeMode="cover"
+      />
+    </View>
   );
 
+  // helps update activeIndex
+  // updates the pagination dots
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index);
+    }
+  }).current;
+
+  // helps update activeIndex
+  // determines when an item is "viewable"
+  // when the user swipes and 50% of the image is shown, onViewableItemsChanged is called
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50
+  }).current;
+
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         ref={flatListRef}
         data={images}
         renderItem={renderItem}
         horizontal
         pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
+        showsHorizontalScrollIndicator={false} // hides the horizontal scroll indicator
+        keyExtractor={(_, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig} //determines when an item is "viewable"
+        decelerationRate="fast" // how fast the scroll is
+        snapToInterval={carouselWidth}
+        snapToAlignment="center"
       />
       <View style={styles.pagination}>
         {images.map((_, index) => (
@@ -46,9 +70,20 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    width: width,
+  container: {
+    width: carouselWidth,
     height: 350,
+    alignSelf: 'center',
+  },
+  imageContainer: {
+    width: carouselWidth,
+    height: 350,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
   pagination: {
     flexDirection: 'row',

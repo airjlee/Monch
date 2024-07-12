@@ -28,7 +28,7 @@ const posts: Post[] = [
     rating: "",
     restaurantName: "",
     images: [
-      'https://via.placeholder.com/250x150',
+      'https://via.placeholder.com/350x150',
       'https://via.placeholder.com/350x150',
       'https://via.placeholder.com/350x150'],
     caption: 'this was gasssss',
@@ -59,7 +59,7 @@ const posts: Post[] = [
 
 
 const PostItem: React.FC<Post> = ({ username, images, caption, rating, restaurantName }) => (
-  // implement this
+  // implement this ?
 //     // <Link href={``} asChild>
       
 //     // </Link>
