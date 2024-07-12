@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
+    borderRadius: 25,
     overflow: 'hidden',
     backgroundColor: '#fafafa',
   },
