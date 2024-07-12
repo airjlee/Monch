@@ -34,7 +34,6 @@ public class PostController {
     public Post updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
         post.setCaption(postDetails.getCaption());
-        post.setContent(postDetails.getContent());
         return postRepository.save(post);
     }
 
