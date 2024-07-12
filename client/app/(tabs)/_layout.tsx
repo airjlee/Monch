@@ -40,14 +40,14 @@ export default function TabLayout() {
         }}
       />
        <Tabs.Screen
-        name="new_post"
+        name="camera"
         options={{
           title: 'Post',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'camera' : 'camera-outline'} color={color} />
           ),
     
-          // tabBarStyle: { display: "none" } // remove nav
+          tabBarStyle: { display: "none" } // remove nav
         }}
         // initialParams={{ handlePost }}
       />

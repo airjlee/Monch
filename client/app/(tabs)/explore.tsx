@@ -14,7 +14,7 @@ export default function TabTwoScreen() {
     <ThemedView style={styles.titleContainer}>
       <Link href="/profile" asChild>
         <TouchableOpacity>
-          <ThemedText type="title">Profile</ThemedText>
+          <ThemedText type="title">Explore Page</ThemedText>
         </TouchableOpacity>
       </Link>
     </ThemedView>
@@ -22,14 +22,10 @@ export default function TabTwoScreen() {
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
   },
 });

@@ -8,14 +8,14 @@ export default function CameraScreen() {
 
   const handleCapture = (uri: string) => {
     router.push({
-      pathname: '/post',
+      pathname: '/(post)/post',
       params: { capturedImageUri: uri }
     });
   };
 
   return (
     <View style={styles.container}>
-      <Camera onCapture={handleCapture} onClose={() => router.replace('/(tabs)')} />
+      <Camera onCapture={handleCapture} onClose={() => router.replace("/(tabs)")} />
     </View>
   );
 }

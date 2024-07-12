@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, Button, Modal, TextInput, Image } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import ImageSelector from '@/components/ImageSelector';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, Link } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import Camera from '@/components/Camera';
 import { Post } from '@/components/Post';
@@ -64,7 +64,7 @@ export default function PostScreen() {
 
       {imageUri !== null && <Image source={{ uri: imageUri }} style={{ width: 300, height: 300 }} />}
       <ImageSelector onImageSelected={handleImageSelected} />
-      <Button title="Take Photo" onPress={() => router.push('/index')} />
+      <Button title="Take Photo" onPress={() => router.back()} />
       <Button title="Remove Photo" onPress={() => setImageUri(null)} />
 
       {/* {imageUri && (
@@ -86,7 +86,10 @@ export default function PostScreen() {
       />
 
       <Button title="Post" onPress={handlePost} />
-      <Button title="Back" onPress={() => router.replace('/(tabs)')} />
+      <Link href={'/(tabs)'} asChild>
+          <Button title="Back" />
+      </Link>
+      {/* <Button title="Back" onPress={() => router.replace('/(tabs)')} /> */}
 
       {/* <Modal visible={showCamera} animationType="none">
         <Camera onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />
