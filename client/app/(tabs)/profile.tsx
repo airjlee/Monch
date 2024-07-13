@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
-import { Feather } from '@expo/vector-icons';
-import { ThemedView } from '@/components/ThemedView';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, {useState} from 'react';
+import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList} from "react-native";
+import {Feather} from '@expo/vector-icons';
+import {ThemedView} from '@/components/ThemedView';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {UserProfile} from "@/components/UserProfile";
 import {Picker} from "@react-native-picker/picker";
 import PostModal from '@/components/individualPost';
-import { Post } from '@/components/Post';
+import {Post} from '@/components/Post';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const DanielLePFP = require('../../assets/images/danielpfp.jpg');
-
-// dummy post array to intitially represent posts
+// dummy profile array to intitially represent posts
 // we will write a fetch from server to get actual posts
 const profiles: UserProfile[] = [
     {
@@ -38,60 +38,60 @@ const profiles: UserProfile[] = [
         bio: 'Sum calm.',
         location: 'Seattle, WA'
     },
-   ];
+];
 
 
 // dummy post array to intitially represent posts
 // we will write a fetch from server to get actual posts
 const posts: Post[] = [
     {
-      id: '1',
-      username: 'airjlee',
-      rating: "",
-      restaurantName: "",
-      images: [
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150'],
-      caption: 'fire food',
-  
-    },
-    {
-      id: '2',
-      username: 'hemkeshb',
-      rating: "",
-      restaurantName: "",
-      images: [
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150'],
-      caption: 'this was gasssss',
-    },
-    {
-      id: '3',
-      username: 'alexshuozeng',
-      rating: "",
-      restaurantName: "",
-      images: [
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150'],
-      caption: 'ts hitttt',
-    },
-    {
-      id: '4',
-      username: 'ledaniel',
-      rating: "",
-      restaurantName: "",
-      images: [
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150',
-        'https://via.placeholder.com/350x150'],
-      caption: 'yummy',
-    },
-  ];
+        id: '1',
+        username: 'airjlee',
+        rating: 1,
+        restaurantName: "",
+        images: [
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150'],
+        caption: 'fire food',
 
-  export default function Profile() {
+    },
+    {
+        id: '2',
+        username: 'hemkeshb',
+        rating: 1,
+        restaurantName: "",
+        images: [
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150'],
+        caption: 'this was gasssss',
+    },
+    {
+        id: '3',
+        username: 'alexshuozeng',
+        rating: 1,
+        restaurantName: "",
+        images: [
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150'],
+        caption: 'ts hitttt',
+    },
+    {
+        id: '4',
+        username: 'ledaniel',
+        rating: 1,
+        restaurantName: "",
+        images: [
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150',
+            'https://via.placeholder.com/350x150'],
+        caption: 'yummy',
+    },
+];
+
+export default function Profile() {
     const insets = useSafeAreaInsets();
     const insetsStyles = {
         closeButton: {
@@ -104,16 +104,9 @@ const posts: Post[] = [
         },
     };
 
-    const [selectedPost, setSelectedPost] = useState<Post|null>(null);
-    const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const handleProfileChange = (username: string) => {
-        const newProfile = profiles.find(profile => profile.username === username);
-        if (newProfile) {
-            setSelectedProfile(newProfile);
-        }
-    };
 
     const handlePostPress = (post: Post) => {
         setSelectedPost(post);
@@ -125,33 +118,81 @@ const posts: Post[] = [
         setSelectedPost(null);
     };
 
-    const renderPostItem = ({ item }: { item: Post }) => (
-        <TouchableOpacity 
+    const renderPostItem = ({item}: { item: Post }) => (
+        <TouchableOpacity
             style={styles.postItem}
             onPress={() => handlePostPress(item)}>
-            <Image source={{ uri: item.images[0] }} style={styles.postImage} />
+            <Image source={{uri: item.images[0]}} style={styles.postImage}/>
         </TouchableOpacity>
     );
 
+    // select initial profile
+    const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+    const [name, setName] = useState(selectedProfile.username);
+    const [image, setImage] = useState(selectedProfile.imageUrl);
+    const [bio, setBio] = useState(selectedProfile.bio);
+    const [location, SetLocation] = useState(selectedProfile.location);
+    const [edit, setEdit] = useState(false);
+
+    const handleProfileChange = (username: string) => {
+        const newProfile = profiles.find(profile => profile.username === username);
+        if (newProfile) {
+            setSelectedProfile(newProfile);
+        }
+    };
+
+    // Capture image from camera roll
+    const onCaptureImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 0.75,
+        });
+
+        if (!result.canceled) {
+            const imageUri = result.assets[0].uri;
+            setImage(imageUri);
+            // Save image URI to AsyncStorage
+            try {
+                await AsyncStorage.setItem('profileImage', imageUri);
+            } catch (error) {
+                console.error('Failed to save image:', error);
+            }
+        }
+    };
+    const loadImage = async () => {
+        try {
+            const savedImage = await AsyncStorage.getItem('profileImage');
+            if (savedImage) {
+                setImage(savedImage);
+            }
+        } catch (error) {
+            console.error('Failed to load image:', error);
+        }
+    };
+    loadImage();
+
     return (
         <ThemedView style={styles.container}>
-            {/* Profile Selector */}
-            <Picker
-                selectedValue={selectedProfile.username}
-                onValueChange={(itemValue: string) => handleProfileChange(itemValue)}
-                style={styles.picker}
-            >
-                {profiles.map(profile => (
-                    <Picker.Item key={profile.username} label={profile.username} value={profile.username} />
-                ))}
-            </Picker>
+            {/*/!* Profile Selector GONE FOR NOW *!/*/}
+            {/*<Picker*/}
+            {/*    selectedValue={selectedProfile.username}*/}
+            {/*    onValueChange={(itemValue: string) => handleProfileChange(itemValue)}*/}
+            {/*    style={styles.picker}*/}
+            {/*>*/}
+            {/*    {profiles.map(profile => (*/}
+            {/*        <Picker.Item key={profile.username} label={profile.username} value={profile.username} />*/}
+            {/*    ))}*/}
+            {/*</Picker>*/}
             <View style={styles.profileHeader}>
-                <Image
-                    source={typeof selectedProfile.imageUrl === 'string'
-                        ? { uri: selectedProfile.imageUrl }
-                        : selectedProfile.imageUrl}
-                    style={styles.profileImage}
-                />
+                <TouchableOpacity onPress={onCaptureImage}>
+                    <Image
+                        source={typeof selectedProfile.imageUrl === 'string'
+                            ? {uri: selectedProfile.imageUrl}
+                            : selectedProfile.imageUrl}
+                        style={styles.profileImage}
+                    />
+                </TouchableOpacity>
                 <Text style={styles.profileName}>{selectedProfile.username}</Text>
             </View>
             <View style={styles.profileDetails}>
@@ -159,13 +200,13 @@ const posts: Post[] = [
                 <Text style={styles.detailsTitle}>Location:</Text>
                 <Text style={styles.detailsText}>{selectedProfile.location}</Text>
             </View>
-            
-            <View style={styles.sortContainer}> 
+
+            <View style={styles.sortContainer}>
                 <TouchableOpacity style={styles.sortButton}>
-                    <Feather name="sliders" size={24} color="#333" />
+                    <Feather name="sliders" size={24} color="#333"/>
                 </TouchableOpacity>
             </View>
-            
+
             <FlatList
                 data={posts}
                 renderItem={renderPostItem}
