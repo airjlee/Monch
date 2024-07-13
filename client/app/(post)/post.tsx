@@ -59,6 +59,8 @@ export default function PostScreen() {
     scrollToRating(r);
   };
 
+  
+
   const renderRatingCarousel = () => {
     const ratings = Array.from({ length: 91 }, (_, i) => (i + 10) / 10);
     return (
@@ -89,9 +91,7 @@ export default function PostScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <Link href={'/(tabs)'} asChild style={styles.backButton}>
-        <Button title="Back" />
-      </Link>
+      
 
       <TouchableOpacity style={styles.imageContainer} onPress={() => setShowPhotoOptions(true)}>
         {imageUri ? (
@@ -125,7 +125,7 @@ export default function PostScreen() {
       />
 
       {renderRatingCarousel()}
-      <ThemedText style={styles.selectedRatingText}>Selected Rating: {rating.toFixed(1)}</ThemedText>
+      {/* <ThemedText style={styles.selectedRatingText}>Selected Rating: {rating.toFixed(1)}</ThemedText> */}
 
       <Button title="Post" onPress={handlePost} />
     </ThemedView>

@@ -5,7 +5,7 @@ import { View, Image, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity
 export type Post = {
     id: string;
     username: string;
-    rating: string;
+    rating: number;
     restaurantName: string;
     images: string[];
     caption: string;
