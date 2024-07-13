@@ -17,6 +17,6 @@ public class Post {
     private String userName;
     private String rating;
     private String restaurantName;
-    private String imageUrl;
+    private String[] imageUrl;
     private String caption;
 }

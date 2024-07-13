@@ -5,8 +5,7 @@ export default function PostLayout() {
   return (
     <Stack
     screenOptions={{
-     
-      headerShown: false,
+      headerShown: true,
     }}>
       <Stack.Screen
         name="post"
