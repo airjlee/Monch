@@ -14,9 +14,9 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userName;
+    private String username;
     private double rating;
     private String restaurantName;
-    private String[] imageUrl;
+    private String[] images;
     private String caption;
 }

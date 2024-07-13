@@ -5,6 +5,7 @@ import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import ImageSelector from '@/components/ImageSelector';
 import { useLocalSearchParams, useRouter, Link } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
+import { Post } from '@/components/Post';
 
 const ITEM_WIDTH = 50;  // Width of each rating item
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -35,9 +36,35 @@ export default function PostScreen() {
     setShowPhotoOptions(false);
   };
 
-  const handlePost = () => {
-    console.log('Posting with text:', postText, 'image:', imageUri, 'rating:', rating);
-    // Implement post saving logic here
+  const handlePost = async () => {
+    const post: Post = {
+      id: "1",
+      username: "dummy",
+      rating: rating,
+      restaurantName: restaurantName,
+      images: imageUri === null ? [] : [imageUri],
+      caption: postText,
+    }
+    try {
+      const response = await fetch("http://localhost:8080/api/posts", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post)
+      })
+
+      if (!response.ok) {
+        throw new Error("not ok");
+      }
+
+      const data = await response.json();
+      console.log("success: ", data);
+
+    } catch (error) {
+      console.error("error: ", error);
+    }
+
   };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -59,16 +86,14 @@ export default function PostScreen() {
     scrollToRating(r);
   };
 
-  
-
   const renderRatingCarousel = () => {
     const ratings = Array.from({ length: 91 }, (_, i) => (i + 10) / 10);
     return (
       <View style={styles.ratingCarouselContainer}>
-        <ScrollView 
+        <ScrollView
           ref={scrollViewRef}
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
+          horizontal
+          showsHorizontalScrollIndicator={false}
           style={styles.ratingCarousel}
           contentContainerStyle={styles.ratingCarouselContent}
           snapToInterval={ITEM_WIDTH}
@@ -91,7 +116,7 @@ export default function PostScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      
+
 
       <TouchableOpacity style={styles.imageContainer} onPress={() => setShowPhotoOptions(true)}>
         {imageUri ? (
@@ -127,7 +152,10 @@ export default function PostScreen() {
       {renderRatingCarousel()}
       {/* <ThemedText style={styles.selectedRatingText}>Selected Rating: {rating.toFixed(1)}</ThemedText> */}
 
-      <Button title="Post" onPress={handlePost} />
+      
+      <Link href={'/(tabs)'} asChild >
+       <Button title="Post" onPress={handlePost} />
+      </Link>
     </ThemedView>
   );
 }
