@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList} from "react-native";
+import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput} from "react-native";
 import {Feather} from '@expo/vector-icons';
 import {ThemedView} from '@/components/ThemedView';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ import PostModal from '@/components/individualPost';
 import {Post} from '@/components/Post';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 // dummy profile array to intitially represent posts
@@ -184,22 +185,65 @@ export default function Profile() {
             {/*        <Picker.Item key={profile.username} label={profile.username} value={profile.username} />*/}
             {/*    ))}*/}
             {/*</Picker>*/}
-            <View style={styles.profileHeader}>
+            <View style={styles.card}>
                 <TouchableOpacity onPress={onCaptureImage}>
                     <Image
-                        source={typeof selectedProfile.imageUrl === 'string'
-                            ? {uri: selectedProfile.imageUrl}
-                            : selectedProfile.imageUrl}
+                        source={typeof image === 'string'
+                            ? {uri: image}
+                            : image}
                         style={styles.profileImage}
                     />
                 </TouchableOpacity>
-                <Text style={styles.profileName}>{selectedProfile.username}</Text>
+                <Text style={styles.profileName}>{name}</Text>
+                <View style={styles.profileDetails}>
+                    {!edit && (
+                        <View style={styles.editRow}>
+                            <Text>
+                                {bio}
+                            </Text>
+                            <TouchableOpacity onPress={() => setEdit(true)}>
+                                <Ionicons name="create-outline" size={24} />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    {edit && (
+                        <View style={styles.editRow}>
+                            <TextInput
+                                placeholder="Your bio"
+                                value={bio || ''}
+                                onChangeText={setBio}
+                                style={[styles.inputField, { width: 100 }]}
+                            />
+                            <TouchableOpacity onPress={() => setEdit(false)}>
+                                <Ionicons name="checkmark-outline" size={24} />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
+                <Text style={styles.detailsText}>{location}</Text>
             </View>
-            <View style={styles.profileDetails}>
-                <Text style={styles.detailsText}>{selectedProfile.bio}</Text>
-                <Text style={styles.detailsTitle}>Location:</Text>
-                <Text style={styles.detailsText}>{selectedProfile.location}</Text>
-            </View>
+            {/*<View style={styles.profileHeader}>*/}
+            {/*    <TouchableOpacity onPress={onCaptureImage}>*/}
+            {/*        <Image*/}
+            {/*            source={typeof selectedProfile.imageUrl === 'string'*/}
+            {/*                ? {uri: selectedProfile.imageUrl}*/}
+            {/*                : selectedProfile.imageUrl}*/}
+            {/*            style={styles.profileImage}*/}
+            {/*        />*/}
+            {/*    </TouchableOpacity>*/}
+            {/*    <Text style={styles.profileName}>{selectedProfile.username}</Text>*/}
+            {/*</View>*/}
+            {/*<View style={styles.profileDetails}>*/}
+            {/*    {edit ? (*/}
+            {/*        <Text>Edit</Text>*/}
+            {/*    ) : (*/}
+            {/*        <View>*/}
+            {/*            <Text style={styles.detailsText}>{selectedProfile.bio}</Text>*/}
+            {/*            <Text style={styles.detailsTitle}>Location:</Text>*/}
+            {/*            <Text style={styles.detailsText}>{selectedProfile.location}</Text>*/}
+            {/*        </View>*/}
+            {/*    )}*/}
+            {/*</View>*/}
 
             <View style={styles.sortContainer}>
                 <TouchableOpacity style={styles.sortButton}>
@@ -228,105 +272,164 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5',
+    }
+    ,
+    card: {
+        backgroundColor: '#fff',
+        padding: 24,
+        borderRadius: 16,
+        marginHorizontal: 24,
+        marginTop: 24,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+        shadowOffset: {
+            width: 1,
+            height: 2,
+        },
+        alignItems: 'center',
+        gap: 7,
+        marginBottom: 24,
     },
     profileHeader: {
         alignItems: 'center',
         marginVertical: 20,
-    },
+    }
+    ,
     profileImage: {
         width: 100,
         height: 100,
         borderRadius: 50,
         marginBottom: 10,
-    },
+    }
+    ,
     profileName: {
         fontSize: 24,
         fontWeight: 'bold',
-    },
+    }
+    ,
     profileDetails: {
+        flexDirection: 'row',
+        gap: 6,
         marginHorizontal: 20,
-    },
+    }
+    ,
     detailsTitle: {
         fontSize: 18,
         fontWeight: 'bold',
         marginTop: 20,
-    },
+    }
+    ,
     detailsText: {
         fontSize: 16,
         marginVertical: 5,
-    },
+    }
+    ,
     sortContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         marginVertical: 10,
         marginHorizontal: 15,
-    },
+    }
+    ,
     sortButton: {
         padding: 5,
-    },
+    }
+    ,
     sortButtonText: {
         color: 'white',
         fontWeight: 'bold',
-    },
+    }
+    ,
     postRow: {
         justifyContent: 'flex-start',
         marginHorizontal: 0,
-    },
+    }
+    ,
     postItem: {
         width: '33.33%',
         aspectRatio: 1,
         padding: 1,
-    },
+    }
+    ,
     postImage: {
         width: '100%',
         height: '100%',
-    },
+    }
+    ,
     postContainer: {
         marginHorizontal: -1,
-    },
+    }
+    ,
     modalContainer: {
         flex: 1,
         backgroundColor: '#fff',
-    },
+    }
+    ,
     closeButton: {
         position: 'absolute',
         right: 10,
         top: 10,
         zIndex: 1,
         padding: 10,
-    },
+    }
+    ,
     modalContent: {
         flex: 1,
         marginTop: 50,
-    },
+    }
+    ,
     modalImage: {
         width: '100%',
         aspectRatio: 1,
-    },
+    }
+    ,
     modalTextContent: {
         padding: 15,
-    },
+    }
+    ,
     modalUsername: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 5,
-    },
+    }
+    ,
     modalRestaurantName: {
         fontSize: 16,
         fontWeight: '500',
         marginBottom: 5,
-    },
+    }
+    ,
     modalRating: {
         fontSize: 14,
         color: '#666',
         marginBottom: 10,
-    },
+    }
+    ,
     modalCaption: {
         fontSize: 14,
-    },
+    }
+    ,
     picker: {
         height: 50,
         width: '100%',
         marginBottom: 20,
+    }
+    ,
+    editRow: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+    },
+    inputField: {
+        height: 44,
+        borderWidth: 1,
+        borderColor: '#ABABAB',
+        borderRadius: 8,
+        padding: 10,
+        backgroundColor: '#fff',
     },
 });
