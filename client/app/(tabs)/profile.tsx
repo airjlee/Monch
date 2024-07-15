@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 
+
 // dummy profile array to intitially represent posts
 // we will write a fetch from server to get actual posts
 const profiles: UserProfile[] = [

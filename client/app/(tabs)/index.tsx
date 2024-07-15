@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView, TouchableOpacity, Touchable, TouchableOpacityBase } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -14,7 +14,7 @@ const posts: Post[] = [
   {
     id: '1',
     username: 'airjlee',
-    rating: "",
+    rating: 0.0,
     restaurantName: "isarn",
     images: [
       'https://via.placeholder.com/350x150',
@@ -26,7 +26,7 @@ const posts: Post[] = [
   {
     id: '2',
     username: 'hemkeshb',
-    rating: "",
+    rating: 0.0,
     restaurantName: "",
     images: [
       'https://via.placeholder.com/350x150',
@@ -37,7 +37,7 @@ const posts: Post[] = [
   {
     id: '3',
     username: 'alexshuozeng',
-    rating: "",
+    rating: 0.0,
     restaurantName: "",
     images: [
       'https://via.placeholder.com/350x150',
@@ -48,7 +48,7 @@ const posts: Post[] = [
   {
     id: '4',
     username: 'ledaniel',
-    rating: "",
+    rating: 0.0,
     restaurantName: "",
     images: [
       'https://via.placeholder.com/350x150',
@@ -86,6 +86,30 @@ export default function HomeScreen(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPostIndex, setSelectedPostIndex] = useState(0);
+  const [postsArray, setPostsArray] = useState([]);
+
+  useEffect(() => {
+    handlePostsRetrieve();
+  }, []);
+  
+  const handlePostsRetrieve = async () => {
+    try{
+      const response = await fetch("http://localhost:8080/api/posts", {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      if(!response.ok){
+        throw new Error("not ok");
+      }
+      const data = await response.json();
+      console.log("POST SUCCESS", data);
+      setPostsArray(data);
+    } catch (error) {
+      console.error("error: ", error);
+    }
+  }
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
