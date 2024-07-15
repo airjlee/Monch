@@ -86,7 +86,9 @@ export default function HomeScreen(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPostIndex, setSelectedPostIndex] = useState(0);
-  const [postsArray, setPostsArray] = useState([]);
+  const [postsArray, setPostsArray] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     handlePostsRetrieve();
@@ -94,6 +96,7 @@ export default function HomeScreen(): React.JSX.Element {
   
   const handlePostsRetrieve = async () => {
     try{
+      setIsLoading(true);
       const response = await fetch("http://localhost:8080/api/posts", {
         method: "GET",
         headers: {
@@ -106,8 +109,16 @@ export default function HomeScreen(): React.JSX.Element {
       const data = await response.json();
       console.log("POST SUCCESS", data);
       setPostsArray(data);
+      setError(null);
     } catch (error) {
       console.error("error: ", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -125,8 +136,14 @@ export default function HomeScreen(): React.JSX.Element {
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
         <SearchBar value={searchQuery} onChangeText={handleSearch} />
+        {isLoading ? (
+        <ThemedText>Loading...</ThemedText>
+      ) : error ? (
+        <ThemedText>Error: {error}</ThemedText>
+      ) : (
         <FlatList
-          data={posts}
+          // data={posts}
+          data={postsArray}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
@@ -137,10 +154,12 @@ export default function HomeScreen(): React.JSX.Element {
           )}
           contentContainerStyle={styles.postsContainer}
         />
+      )}
         <PostModal
           isVisible={modalVisible}
           onClose={() => setModalVisible(false)}
-          post={posts[selectedPostIndex]}
+          // post={posts[selectedPostIndex]}
+          post={postsArray[selectedPostIndex]}
         />
       </ThemedView>
     </SafeAreaView>
