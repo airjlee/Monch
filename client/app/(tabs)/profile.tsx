@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput} from "react-native";
 import {Feather} from '@expo/vector-icons';
 import {ThemedView} from '@/components/ThemedView';
@@ -105,9 +105,45 @@ export default function Profile() {
             marginTop: insets.top + 50,
         },
     };
-
     const [selectedPost, setSelectedPost] = useState<Post | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [postsArray, setPostsArray] = useState<Post[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        handlePostsRetrieve();
+      }, []);
+      
+      const handlePostsRetrieve = async () => {
+        try{
+          setIsLoading(true);
+          const response = await fetch("http://localhost:8080/api/posts", {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+          if(!response.ok){
+            throw new Error("not ok");
+          }
+          const data = await response.json();
+          console.log("POST SUCCESS", data);
+          setPostsArray(data);
+          setError(null);
+        } catch (error) {
+          console.error("error: ", error);
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError('An unknown error occurred');
+          }
+        } finally {
+          setIsLoading(false);
+        }
+    }
+    
+    
 
 
     const handlePostPress = (post: Post) => {
