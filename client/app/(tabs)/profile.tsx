@@ -105,8 +105,8 @@ export default function Profile() {
             marginTop: insets.top + 50,
         },
     };
-    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedPostIndex, setSelectedPostIndex] = useState(0);
+    const [modalVisible, setModalVisible] = useState(false);
     const [postsArray, setPostsArray] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -142,24 +142,21 @@ export default function Profile() {
           setIsLoading(false);
         }
     }
-    
-    
 
-
-    const handlePostPress = (post: Post) => {
-        setSelectedPost(post);
-        setIsModalVisible(true);
+    const handlePostPress = (postIndex: number) => {
+        setSelectedPostIndex(postIndex);
+        setModalVisible(true);
     };
 
-    const handleCloseModal = () => {
-        setIsModalVisible(false);
-        setSelectedPost(null);
-    };
+    // const handleCloseModal = () => {
+    //     setIsModalVisible(false);
+    //     setSelectedPost(null);
+    // };
 
-    const renderPostItem = ({item}: { item: Post }) => (
+    const renderPostItem = ({item, index}: { item: Post, index: number }) => (
         <TouchableOpacity
             style={styles.postItem}
-            onPress={() => handlePostPress(item)}>
+            onPress={() => handlePostPress(index)}>
             <Image source={{uri: item.images[0]}} style={styles.postImage}/>
         </TouchableOpacity>
     );
@@ -289,7 +286,8 @@ export default function Profile() {
             </View>
 
             <FlatList
-                data={posts}
+                // data={posts}
+                data={postsArray}
                 renderItem={renderPostItem}
                 keyExtractor={item => item.id}
                 numColumns={3}
@@ -297,9 +295,10 @@ export default function Profile() {
                 contentContainerStyle={styles.postContainer}
             />
             <PostModal
-                isVisible={isModalVisible}
-                onClose={handleCloseModal}
-                post={selectedPost}
+                isVisible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                // post={selectedPost}
+                post={postsArray[selectedPostIndex]}
             />
         </ThemedView>
     );
