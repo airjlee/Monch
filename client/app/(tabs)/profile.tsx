@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput} from "react-native";
+import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput,  } from "react-native";
 import {Feather} from '@expo/vector-icons';
 import {ThemedView} from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {UserProfile} from "@/components/UserProfile";
 import {Picker} from "@react-native-picker/picker";
@@ -148,11 +149,6 @@ export default function Profile() {
         setModalVisible(true);
     };
 
-    // const handleCloseModal = () => {
-    //     setIsModalVisible(false);
-    //     setSelectedPost(null);
-    // };
-
     const renderPostItem = ({item, index}: { item: Post, index: number }) => (
         <TouchableOpacity
             style={styles.postItem}
@@ -278,13 +274,17 @@ export default function Profile() {
             {/*        </View>*/}
             {/*    )}*/}
             {/*</View>*/}
-
+            
             <View style={styles.sortContainer}>
                 <TouchableOpacity style={styles.sortButton}>
                     <Feather name="sliders" size={24} color="#333"/>
                 </TouchableOpacity>
             </View>
-
+            {isLoading ? (
+            <ThemedText>Loading...</ThemedText>
+        ) : error ? (
+            <ThemedText>Error: {error}</ThemedText>
+        ) : (
             <FlatList
                 // data={posts}
                 data={postsArray}
@@ -294,6 +294,7 @@ export default function Profile() {
                 columnWrapperStyle={styles.postRow}
                 contentContainerStyle={styles.postContainer}
             />
+        )}
             <PostModal
                 isVisible={modalVisible}
                 onClose={() => setModalVisible(false)}
