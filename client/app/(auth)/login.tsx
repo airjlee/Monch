@@ -19,6 +19,7 @@ export default function Login() {
       const result = await signInWithEmailAndPassword(auth, email, password);
       // Handle successful login (you might want to navigate to a different screen or show a success message)
       console.log('User signed in:', result.user);
+      router.replace('/(tabs)');
     } catch (error) {
         console.log(error);
     } finally {
