@@ -17,7 +17,7 @@ public class PostController {
 
     @GetMapping
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
     @PostMapping
