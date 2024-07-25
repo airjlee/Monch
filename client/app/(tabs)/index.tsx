@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
-import { Link } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import ImageCarousel from '@/components/imageCarousel';
 import PostModal from '@/components/individualPost'
 
@@ -89,6 +89,7 @@ export default function HomeScreen(): React.JSX.Element {
   const [postsArray, setPostsArray] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { refresh } = useLocalSearchParams();
 
   useEffect(() => {
     handlePostsRetrieve();

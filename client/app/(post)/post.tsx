@@ -39,8 +39,7 @@ export default function PostScreen() {
   };
 
   const handlePost = async () => {
-    const post: Post = {
-      id: "1",
+    const post: Omit<Post, 'id'> = { // let server generate post id
       username: user?.email === undefined  || user?.email == null ? "" : user?.email,
       rating: rating,
       restaurantName: restaurantName,
@@ -62,6 +61,10 @@ export default function PostScreen() {
 
       const data = await response.json();
       console.log("success: ", data);
+      router.push({
+        pathname: '/(tabs)',
+        params: { refresh: Date.now().toString() }
+      });
 
     } catch (error) {
       console.error("error: ", error);
@@ -155,9 +158,10 @@ export default function PostScreen() {
       {/* <ThemedText style={styles.selectedRatingText}>Selected Rating: {rating.toFixed(1)}</ThemedText> */}
 
       
-      <Link href={'/(tabs)'} asChild >
+      {/* <Link href={'/(tabs)'} asChild > */}
        <Button title="Post" onPress={handlePost} />
-      </Link>
+      {/* </Link> */}
+      
     </ThemedView>
   );
 }
