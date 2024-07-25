@@ -11,6 +11,7 @@ import {Post} from '@/components/Post';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAuth } from '@/hooks/AuthContext';
 
 
 
@@ -111,6 +112,7 @@ export default function Profile() {
     const [postsArray, setPostsArray] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { user } = useAuth();
 
     useEffect(() => {
         handlePostsRetrieve();
@@ -224,7 +226,7 @@ export default function Profile() {
                         style={styles.profileImage}
                     />
                 </TouchableOpacity>
-                <Text style={styles.profileName}>{name}</Text>
+                <Text style={styles.profileName}>{user?.email}</Text>
                 <View style={styles.profileDetails}>
                     {!edit && (
                         <View style={styles.editRow}>

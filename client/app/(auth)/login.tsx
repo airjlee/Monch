@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Button, ActivityIndicator, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { useRouter } from 'expo-router';
+import { useAuth } from '@/hooks/AuthContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const { user, setUser } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
@@ -19,6 +21,7 @@ export default function Login() {
       const result = await signInWithEmailAndPassword(auth, email, password);
       // Handle successful login (you might want to navigate to a different screen or show a success message)
       console.log('User signed in:', result.user);
+      setUser(result.user);
       router.replace('/(tabs)');
     } catch (error) {
         console.log(error);
@@ -34,6 +37,7 @@ export default function Login() {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       // Handle successful login
       console.log('User signed in:', result.user);
+      setUser(result.user);
       router.replace('/(tabs)');
     } catch (error) {
         console.log(error);

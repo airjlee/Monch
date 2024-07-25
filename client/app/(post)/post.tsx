@@ -6,6 +6,7 @@ import ImageSelector from '@/components/ImageSelector';
 import { useLocalSearchParams, useRouter, Link } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
+import { useAuth } from '@/hooks/AuthContext';
 
 const ITEM_WIDTH = 50;  // Width of each rating item
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -20,6 +21,7 @@ export default function PostScreen() {
   const [showPhotoOptions, setShowPhotoOptions] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(5.0);
   const scrollViewRef = useRef<ScrollView>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (capturedImageUri) {
@@ -39,7 +41,7 @@ export default function PostScreen() {
   const handlePost = async () => {
     const post: Post = {
       id: "1",
-      username: "dummy",
+      username: user?.email === undefined  || user?.email == null ? "" : user?.email,
       rating: rating,
       restaurantName: restaurantName,
       images: imageUri === null ? [] : [imageUri],
