@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { View, Button, ActivityIndicator, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
+import { useRouter } from 'expo-router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const signInWithEmail = async () => {
     setLoading(true);
@@ -30,6 +33,7 @@ export default function Login() {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       // Handle successful login
       console.log('User signed in:', result.user);
+      router.replace('/(tabs)');
     } catch (error) {
         console.log(error);
     } finally {
