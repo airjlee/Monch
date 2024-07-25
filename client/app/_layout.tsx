@@ -1,17 +1,35 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRootNavigationState, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { auth } from './firebaseConfig'; // Adjust this import path as needed
+import { auth } from './firebaseConfig';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+function useProtectedRoute(user: User | null) {
+  const segments = useSegments();
+  const router = useRouter();
+  const navigationState = useRootNavigationState();
+
+  useEffect(() => {
+    if (!navigationState?.key) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (!user && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (user && inAuthGroup) {
+      router.replace('/(tabs)/index');
+    }
+  }, [user, segments, navigationState?.key]);
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -24,6 +42,8 @@ export default function RootLayout() {
     // FagoProBold: require('../assets/fonts/fagopro-bold.otf'),
   });
 
+  useProtectedRoute(user);
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -35,7 +55,7 @@ export default function RootLayout() {
       setUser(user);
       if (user) {
         // if the user is signed in, go to the main page
-        router.replace('/(tabs)');
+        router.replace('/(tabs)/index');
       } else {
         // if user is not signed in, go to login page
         router.replace('/(auth)/login');
@@ -58,18 +78,6 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-
-      {/*
-      <Stack initialRouteName='Login'>
-        { user ? (
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        )}
-        // <Stack.Screen name="(post)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    */}
     </ThemeProvider>
   );
 }
