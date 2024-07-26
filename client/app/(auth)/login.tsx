@@ -60,7 +60,7 @@ export default function Login() {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome to Monch</Text>
+      <Text style={styles.monchText}>Monch</Text>
       <TextInput 
         style={styles.input} 
         placeholder="Email"
@@ -104,7 +104,7 @@ export default function Login() {
       justifyContent: 'center',
       backgroundColor: '#fff',
     },
-    welcomeText: {
+    monchText: {
       fontSize: 24,
       fontWeight: 'bold',
       marginBottom: 20,
