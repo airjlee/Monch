@@ -236,7 +236,7 @@ export default function Profile() {
                         style={styles.profileImage}
                     />
                 </TouchableOpacity>
-                <Text style={styles.profileName}>{user?.email}</Text>
+                <Text style={styles.profileName}>{user?.displayName}</Text>
                 <View style={styles.profileDetails}>
                     {!edit && (
                         <View style={styles.editRow}>

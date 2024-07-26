@@ -41,7 +41,7 @@ export default function PostScreen () {
 
   const handlePost = async () => {
     const post: Omit<Post, 'id'> = { // let server generate post id
-      username: user?.email === undefined  || user?.email == null ? "" : user?.email,
+      username: user?.displayName === undefined  || user?.displayName == null ? "" : user?.displayName,
       rating: rating,
       restaurantName: restaurantName,
       images: imageUri === null ? [] : [imageUri],

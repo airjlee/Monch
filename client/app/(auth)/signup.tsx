@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/hooks/AuthContext';
@@ -28,6 +28,10 @@ export default function Signup() {
     setError(null);
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
+      
+      await updateProfile(result.user, {
+        displayName: username
+      });
       console.log('User signed up:', result.user);
       setUser(result.user);
       router.replace('/(tabs)');
