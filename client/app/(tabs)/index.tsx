@@ -141,6 +141,9 @@ export default function HomeScreen(): React.JSX.Element {
         <ThemedText>Loading...</ThemedText>
       ) : error ? (
         <ThemedText>Error: {error}</ThemedText>
+      ) : postsArray.length === 0 ? (
+        <ThemedText>No posts!</ThemedText>
+        
       ) : (
         <FlatList
           // data={posts}

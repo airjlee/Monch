@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Button, ActivityIndicator, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/hooks/AuthContext';
@@ -13,6 +13,15 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
+
+//   useEffect(() => {     
+//     onAuthStateChanged(auth, (user) => {       
+//         console.log("USER: " + user + " " + user?.email);       
+//         if (user) {         
+//             router.replace("/(tabs)/index");       
+//         }     
+//     });   
+// }, []);
 
   const signInWithEmail = async () => {
     setLoading(true);
@@ -51,9 +60,10 @@ export default function Login() {
     setLoading(true);
     setError(null);
     try {
-      const result = await signInWithPopup(auth, provider);
-      // Handle successful login
-      console.log('User signed in:', result.user);
+      console.log("not yet");
+      // const result = await signInWithPopup(auth, provider);
+      // // Handle successful login
+      // console.log('User signed in:', result.user);
     } catch (error) {
         console.log(error);
     } finally {
