@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Link } from 'expo-router';
-import { Button, Pressable } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 
 export default function PostLayout() {
   return (
@@ -9,9 +9,9 @@ export default function PostLayout() {
         headerShown: true,
         headerLeft: () => (
           <Link href="/(tabs)" asChild>
-            <Button 
-                  title="close" 
-              />
+            <TouchableOpacity>
+              <Text style={{ color: 'blue', padding: 10 }}>Close</Text>
+            </TouchableOpacity>
           </Link>
         ),
       }}
