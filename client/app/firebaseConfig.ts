@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import {  getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+// import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDErox-9e_8_FXoiyfOcule4CMlJD0dheQ",
@@ -18,3 +20,7 @@ export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
 // export const auth = getAuth(app);
+// GoogleSignin.configure({
+//   webClientId: '//495685574015-eh0nlofeo30ej3ljfq2t4didcoa06d80.apps.googleusercontent.com',
+// });
+

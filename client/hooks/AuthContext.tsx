@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../app/firebaseConfig'; // adjust the import path as needed
+import { auth } from '../app/firebaseConfig';
 
 type AuthContextType = {
   user: User | null;
@@ -17,7 +17,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(firebaseUser);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
