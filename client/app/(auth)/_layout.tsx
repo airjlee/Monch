@@ -5,7 +5,7 @@ export default function AuthLayout() {
     headerShown: false,
     }}>
       <Stack.Screen
-            name="login"
+            name="index"
             options={{
               title: 'login',
             }}

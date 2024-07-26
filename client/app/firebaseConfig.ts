@@ -13,8 +13,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-// REACT NATIVE CONTEXT --> LOOK INTO REPLACING WITH REDUX
-// export const auth = initializeAuth(app, { 
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-// });
-export const auth = getAuth(app);
+// REACT NATIVE PERSIST--> LOOK INTO REPLACING WITH REDUX
+export const auth = initializeAuth(app, { 
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
+// export const auth = getAuth(app);

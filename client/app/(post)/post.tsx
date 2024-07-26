@@ -11,7 +11,7 @@ import { useAuth } from '@/hooks/AuthContext';
 const ITEM_WIDTH = 50;  // Width of each rating item
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-export default function PostScreen() {
+export const PostScreen = () => {
   console.log('PostScreen rendered');
   const router = useRouter();
   const { capturedImageUri } = useLocalSearchParams();
