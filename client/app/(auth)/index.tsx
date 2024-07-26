@@ -19,7 +19,7 @@ export default function Login() {
     onAuthStateChanged(auth, (user) => {       
         console.log("USER: " + user + " " + user?.email);       
         if (user) {         
-            router.replace("/(tabs");       
+            router.replace("/(tabs)");       
         }     
     }); 
 }, []);

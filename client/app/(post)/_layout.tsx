@@ -9,14 +9,9 @@ export default function PostLayout() {
         headerShown: true,
         headerLeft: () => (
           <Link href="/(tabs)" asChild>
-            <Pressable>
-              {({ pressed }) => (
-                <Button 
+            <Button 
                   title="close" 
-                  onPress={() => {}} // This onPress is just a placeholder
-                />
-              )}
-            </Pressable>
+              />
           </Link>
         ),
       }}
