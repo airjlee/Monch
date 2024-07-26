@@ -24,36 +24,23 @@ export default function Login() {
 // }, []);
 
   const signInWithEmail = async () => {
+    if (!email) {
+      setError('Please enter your email');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      // Handle successful login (you might want to navigate to a different screen or show a success message)
       console.log('User signed in:', result.user);
       setUser(result.user);
       router.replace('/(tabs)');
     } catch (error) {
-        console.log(error);
+      setError('Invalid email or password');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
-
-  const signUp = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      // Handle successful login
-      console.log('User signed in:', result.user);
-      setUser(result.user);
-      router.replace('/(tabs)');
-    } catch (error) {
-        console.log(error);
-    } finally {
-        setLoading(false);
-    }
-  }
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -70,93 +57,99 @@ export default function Login() {
         setLoading(false);
     }
   };
-
+  
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
+      <Text style={styles.welcomeText}>Welcome to Monch</Text>
+      <TextInput 
+        style={styles.input} 
         placeholder="Email"
+        placeholderTextColor="#999"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
+      <TextInput 
+        style={styles.input} 
         placeholder="Password"
+        placeholderTextColor="#999"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true}
-        autoCapitalize="none"
+        secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={signInWithEmail} disabled={loading}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={signUp} disabled={loading}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.button]} onPress={signInWithGoogle} disabled={loading}>
-        <Text style={styles.buttonText}>sign in with Google</Text>
-      </TouchableOpacity>
-      {loading && <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />}
       {error && <Text style={styles.errorText}>{error}</Text>}
+      <TouchableOpacity style={styles.continueButton} onPress={signInWithEmail} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Continue</Text>
+        )}
+      </TouchableOpacity>
+      <Text style={styles.orText}>or</Text>
+      <TouchableOpacity style={styles.socialButton} onPress={signInWithGoogle} disabled={loading}>
+        <Text style={styles.socialButtonText}>Continue with Google</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
+        <Text style={styles.signupText}>Don't have an account? Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#f7f7f7',
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    color: '#333',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '80%',
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-    elevation: 2,
-  },
-  button: {
-    width: '80%',
-    height: 40,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 3,
-    marginVertical: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  loading: {
-    marginTop: 10,
-  },
-  errorText: {
-    color: 'red',
-    marginTop: 10,
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+    },
+    welcomeText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+      textAlign: 'center',
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: '#ddd',
+      padding: 15,
+      marginBottom: 15,
+      borderRadius: 10,
+    },
+    continueButton: {
+      backgroundColor: '#008000',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    orText: {
+      textAlign: 'center',
+      marginVertical: 15,
+    },
+    socialButton: {
+      borderWidth: 1,
+      borderColor: '#000',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    socialButtonText: {
+      fontSize: 16,
+    },
+    signupText: {
+      marginTop: 20,
+      textAlign: 'center',
+      color: '#008000',
+    },
+    errorText: {
+      color: 'red',
+      marginBottom: 10,
+    },
+  });
