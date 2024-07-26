@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput,  } from "react-native";
+import {Image, StyleSheet, Button, Text, View, TouchableOpacity, FlatList, TextInput,  } from "react-native";
 import {Feather} from '@expo/vector-icons';
 import {ThemedView} from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -12,6 +12,8 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAuth } from '@/hooks/AuthContext';
+import { auth } from '../firebaseConfig';
+import { useRouter } from 'expo-router';
 
 
 
@@ -112,7 +114,9 @@ export default function Profile() {
     const [postsArray, setPostsArray] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
+    
+    const router = useRouter();
 
     useEffect(() => {
         handlePostsRetrieve();
@@ -145,6 +149,12 @@ export default function Profile() {
           setIsLoading(false);
         }
     }
+
+    const handleLogout = async () => {
+        await auth.signOut();
+        setUser(null);
+        router.replace('/(auth)');
+      };
 
     const handlePostPress = (postIndex: number) => {
         setSelectedPostIndex(postIndex);
@@ -253,6 +263,7 @@ export default function Profile() {
                     )}
                 </View>
                 <Text style={styles.detailsText}>{location}</Text>
+                <Button title="Logout" onPress={handleLogout} />
             </View>
             {/*<View style={styles.profileHeader}>*/}
             {/*    <TouchableOpacity onPress={onCaptureImage}>*/}
