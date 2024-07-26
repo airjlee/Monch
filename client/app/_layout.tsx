@@ -54,10 +54,8 @@ export default function RootLayout() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       if (user) {
-        // if the user is signed in, go to the main page
         router.replace('/(tabs)/index');
       } else {
-        // if user is not signed in, go to login page
         router.replace('/(auth)/login');
       }
     });
@@ -77,6 +75,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(post)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
