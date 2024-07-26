@@ -14,14 +14,15 @@ export default function Login() {
 
   const router = useRouter();
 
-//   useEffect(() => {     
-//     onAuthStateChanged(auth, (user) => {       
-//         console.log("USER: " + user + " " + user?.email);       
-//         if (user) {         
-//             router.replace("/(tabs)/index");       
-//         }     
-//     });   
-// }, []);
+  //this doesn't work for some reason
+  useEffect(() => {     
+    onAuthStateChanged(auth, (user) => {       
+        console.log("USER: " + user + " " + user?.email);       
+        if (user) {         
+            router.replace("/(tabs");       
+        }     
+    }); 
+}, []);
 
   const signInWithEmail = async () => {
     setLoading(true);
