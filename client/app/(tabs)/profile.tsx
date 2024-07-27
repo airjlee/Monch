@@ -5,7 +5,6 @@ import {ThemedView} from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {UserProfile} from "@/components/UserProfile";
-import {Picker} from "@react-native-picker/picker";
 import PostModal from '@/components/individualPost';
 import {Post} from '@/components/Post';
 import * as ImagePicker from 'expo-image-picker';
@@ -19,32 +18,12 @@ import { useRouter } from 'expo-router';
 
 // dummy profile array to intitially represent posts
 // we will write a fetch from server to get actual posts
-const profiles: UserProfile[] = [
-    {
-        username: 'airjlee',
-        imageUrl: 'https://via.placeholder.com/350x150',
-        bio: 'fire food',
-        location: 'seattle'
-    },
-    {
-        username: 'hemkeshb',
-        imageUrl: 'https://via.placeholder.com/350x150',
-        bio: 'fire food',
-        location: 'seattle'
-    },
-    {
-        username: 'alexshuozeng',
-        imageUrl: 'https://via.placeholder.com/350x150',
-        bio: 'fire food',
-        location: 'seattle'
-    },
-    {
-        username: 'ledaniel',
-        imageUrl: require('../../assets/images/danielpfp.jpg'),
-        bio: 'Sum calm.',
-        location: 'Seattle, WA'
-    },
-];
+const Daniel: UserProfile = {
+    username: 'ledaniel',
+    imageUrl: require('../../assets/images/danielpfp.jpg'),
+    bio: 'Sum calm.',
+    location: 'Seattle, WA'
+};
 
 
 // dummy post array to intitially represent posts
@@ -170,19 +149,12 @@ export default function Profile() {
     );
 
     // select initial profile
-    const [selectedProfile, setSelectedProfile] = useState(profiles[0]);
+    const [selectedProfile, setSelectedProfile] = useState(Daniel);
     const [name, setName] = useState(selectedProfile.username);
     const [image, setImage] = useState(selectedProfile.imageUrl);
     const [bio, setBio] = useState(selectedProfile.bio);
     const [location, SetLocation] = useState(selectedProfile.location);
     const [edit, setEdit] = useState(false);
-
-    const handleProfileChange = (username: string) => {
-        const newProfile = profiles.find(profile => profile.username === username);
-        if (newProfile) {
-            setSelectedProfile(newProfile);
-        }
-    };
 
     // Capture image from camera roll
     const onCaptureImage = async () => {
@@ -217,16 +189,6 @@ export default function Profile() {
 
     return (
         <ThemedView style={styles.container}>
-            {/*/!* Profile Selector GONE FOR NOW *!/*/}
-            {/*<Picker*/}
-            {/*    selectedValue={selectedProfile.username}*/}
-            {/*    onValueChange={(itemValue: string) => handleProfileChange(itemValue)}*/}
-            {/*    style={styles.picker}*/}
-            {/*>*/}
-            {/*    {profiles.map(profile => (*/}
-            {/*        <Picker.Item key={profile.username} label={profile.username} value={profile.username} />*/}
-            {/*    ))}*/}
-            {/*</Picker>*/}
             <View style={styles.card}>
                 <TouchableOpacity onPress={onCaptureImage}>
                     <Image
@@ -265,28 +227,6 @@ export default function Profile() {
                 <Text style={styles.detailsText}>{location}</Text>
                 <Button title="Logout" onPress={handleLogout} />
             </View>
-            {/*<View style={styles.profileHeader}>*/}
-            {/*    <TouchableOpacity onPress={onCaptureImage}>*/}
-            {/*        <Image*/}
-            {/*            source={typeof selectedProfile.imageUrl === 'string'*/}
-            {/*                ? {uri: selectedProfile.imageUrl}*/}
-            {/*                : selectedProfile.imageUrl}*/}
-            {/*            style={styles.profileImage}*/}
-            {/*        />*/}
-            {/*    </TouchableOpacity>*/}
-            {/*    <Text style={styles.profileName}>{selectedProfile.username}</Text>*/}
-            {/*</View>*/}
-            {/*<View style={styles.profileDetails}>*/}
-            {/*    {edit ? (*/}
-            {/*        <Text>Edit</Text>*/}
-            {/*    ) : (*/}
-            {/*        <View>*/}
-            {/*            <Text style={styles.detailsText}>{selectedProfile.bio}</Text>*/}
-            {/*            <Text style={styles.detailsTitle}>Location:</Text>*/}
-            {/*            <Text style={styles.detailsText}>{selectedProfile.location}</Text>*/}
-            {/*        </View>*/}
-            {/*    )}*/}
-            {/*</View>*/}
             
             <View style={styles.sortContainer}>
                 <TouchableOpacity style={styles.sortButton}>
@@ -351,7 +291,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-        marginBottom: 10,
+        marginBottom: 5,
     }
     ,
     profileName: {
@@ -459,14 +399,7 @@ const styles = StyleSheet.create({
     ,
     modalCaption: {
         fontSize: 14,
-    }
-    ,
-    picker: {
-        height: 50,
-        width: '100%',
-        marginBottom: 20,
-    }
-    ,
+    },
     editRow: {
         flex: 1,
         flexDirection: 'row',
