@@ -3,7 +3,7 @@ import {Image, StyleSheet, Button, Text, View, TouchableOpacity, FlatList, TextI
 import {Feather} from '@expo/vector-icons';
 import {ThemedView} from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {UserProfile} from "@/components/UserProfile";
 import PostModal from '@/components/individualPost';
 import {Post} from '@/components/Post';
@@ -188,77 +188,83 @@ export default function Profile() {
     loadImage();
 
     return (
-        <ThemedView style={styles.container}>
-            <View style={styles.card}>
-                <TouchableOpacity onPress={onCaptureImage}>
-                    <Image
-                        source={typeof image === 'string'
-                            ? {uri: image}
-                            : image}
-                        style={styles.profileImage}
-                    />
-                </TouchableOpacity>
-                <Text style={styles.profileName}>{user?.displayName}</Text>
-                <View style={styles.profileDetails}>
-                    {!edit && (
-                        <View style={styles.editRow}>
-                            <Text>
-                                {bio}
-                            </Text>
-                            <TouchableOpacity onPress={() => setEdit(true)}>
-                                <Ionicons name="create-outline" size={24} />
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                    {edit && (
-                        <View style={styles.editRow}>
-                            <TextInput
-                                placeholder="Your bio"
-                                value={bio || ''}
-                                onChangeText={setBio}
-                                style={[styles.inputField, { width: 100 }]}
-                            />
-                            <TouchableOpacity onPress={() => setEdit(false)}>
-                                <Ionicons name="checkmark-outline" size={24} />
-                            </TouchableOpacity>
-                        </View>
-                    )}
+        <SafeAreaView style={styles.safeArea}>
+            <ThemedView style={styles.container}>
+                <View style={styles.card}>
+                    <TouchableOpacity onPress={onCaptureImage}>
+                        <Image
+                            source={typeof image === 'string'
+                                ? {uri: image}
+                                : image}
+                            style={styles.profileImage}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.profileName}>{user?.displayName}</Text>
+                    <View style={styles.profileDetails}>
+                        {!edit && (
+                            <View style={styles.editRow}>
+                                <Text>
+                                    {bio}
+                                </Text>
+                                <TouchableOpacity onPress={() => setEdit(true)}>
+                                    <Ionicons name="create-outline" size={24} />
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                        {edit && (
+                            <View style={styles.editRow}>
+                                <TextInput
+                                    placeholder="Your bio"
+                                    value={bio || ''}
+                                    onChangeText={setBio}
+                                    style={[styles.inputField, { width: 100 }]}
+                                />
+                                <TouchableOpacity onPress={() => setEdit(false)}>
+                                    <Ionicons name="checkmark-outline" size={24} />
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                    </View>
+                    <Text style={styles.detailsText}>{location}</Text>
+                    <Button title="Logout" onPress={handleLogout} />
                 </View>
-                <Text style={styles.detailsText}>{location}</Text>
-                <Button title="Logout" onPress={handleLogout} />
-            </View>
-            
-            <View style={styles.sortContainer}>
-                <TouchableOpacity style={styles.sortButton}>
-                    <Feather name="sliders" size={24} color="#333"/>
-                </TouchableOpacity>
-            </View>
-            {isLoading ? (
-            <ThemedText>Loading...</ThemedText>
-        ) : error ? (
-            <ThemedText>Error: {error}</ThemedText>
-        ) : (
-            <FlatList
-                // data={posts}
-                data={postsArray}
-                renderItem={renderPostItem}
-                keyExtractor={item => item.id}
-                numColumns={3}
-                columnWrapperStyle={styles.postRow}
-                contentContainerStyle={styles.postContainer}
-            />
-        )}
-            <PostModal
-                isVisible={modalVisible}
-                onClose={() => setModalVisible(false)}
-                // post={selectedPost}
-                post={postsArray[selectedPostIndex]}
-            />
-        </ThemedView>
+                
+                <View style={styles.sortContainer}>
+                    <TouchableOpacity style={styles.sortButton}>
+                        <Feather name="sliders" size={24} color="#333"/>
+                    </TouchableOpacity>
+                </View>
+                {isLoading ? (
+                <ThemedText>Loading...</ThemedText>
+            ) : error ? (
+                <ThemedText>Error: {error}</ThemedText>
+            ) : (
+                <FlatList
+                    // data={posts}
+                    data={postsArray}
+                    renderItem={renderPostItem}
+                    keyExtractor={item => item.id}
+                    numColumns={3}
+                    columnWrapperStyle={styles.postRow}
+                    contentContainerStyle={styles.postContainer}
+                />
+            )}
+                <PostModal
+                    isVisible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    // post={selectedPost}
+                    post={postsArray[selectedPostIndex]}
+                />
+            </ThemedView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#f5f5f5',
+    },
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5',

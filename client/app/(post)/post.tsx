@@ -7,6 +7,7 @@ import { useLocalSearchParams, useRouter, Link } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 import { useAuth } from '@/hooks/AuthContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ITEM_WIDTH = 50;  // Width of each rating item
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -121,49 +122,49 @@ export default function PostScreen () {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <SafeAreaView>
+      <ThemedView style={styles.container}>
+        <TouchableOpacity style={styles.imageContainer} onPress={() => setShowPhotoOptions(true)}>
+          {imageUri ? (
+            <Image source={{ uri: imageUri }} style={styles.image} />
+          ) : (
+            <ThemedText>Tap to add photo</ThemedText>
+          )}
+        </TouchableOpacity>
 
-
-      <TouchableOpacity style={styles.imageContainer} onPress={() => setShowPhotoOptions(true)}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.image} />
-        ) : (
-          <ThemedText>Tap to add photo</ThemedText>
+        {showPhotoOptions && (
+          <View style={styles.photoOptions}>
+            <Button title="Take Photo" onPress={() => router.back()} />
+            <ImageSelector onImageSelected={handleImageSelected} />
+            {imageUri && <Button title="Remove Photo" onPress={() => setImageUri(null)} />}
+          </View>
         )}
-      </TouchableOpacity>
 
-      {showPhotoOptions && (
-        <View style={styles.photoOptions}>
-          <Button title="Take Photo" onPress={() => router.back()} />
-          <ImageSelector onImageSelected={handleImageSelected} />
-          {imageUri && <Button title="Remove Photo" onPress={() => setImageUri(null)} />}
-        </View>
-      )}
+        <TextInput
+          style={styles.textInput}
+          placeholder="Restaurant Name..."
+          value={restaurantName}
+          onChangeText={setRestaurantName}
+        />
 
-      <TextInput
-        style={styles.textInput}
-        placeholder="Restaurant Name..."
-        value={restaurantName}
-        onChangeText={setRestaurantName}
-      />
+        <TextInput
+          style={[styles.textInput, styles.captionInput]}
+          placeholder="Enter caption..."
+          value={postText}
+          onChangeText={setPostText}
+          multiline
+        />
 
-      <TextInput
-        style={[styles.textInput, styles.captionInput]}
-        placeholder="Enter caption..."
-        value={postText}
-        onChangeText={setPostText}
-        multiline
-      />
+        {renderRatingCarousel()}
+        {/* <ThemedText style={styles.selectedRatingText}>Selected Rating: {rating.toFixed(1)}</ThemedText> */}
 
-      {renderRatingCarousel()}
-      {/* <ThemedText style={styles.selectedRatingText}>Selected Rating: {rating.toFixed(1)}</ThemedText> */}
 
-      
-      {/* <Link href={'/(tabs)'} asChild > */}
-       <Button title="Post" onPress={handlePost} />
-      {/* </Link> */}
-      
-    </ThemedView>
+        {/* <Link href={'/(tabs)'} asChild > */}
+        <Button title="Post" onPress={handlePost} />
+        {/* </Link> */}
+
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 

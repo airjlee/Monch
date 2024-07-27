@@ -21,7 +21,7 @@ export default function Login() {
         if (user) {         
             router.replace("/(tabs)");       
         }     
-    }); 
+    });
 }, []);
 
   const signInWithEmail = async () => {

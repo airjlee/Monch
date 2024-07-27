@@ -8,20 +8,27 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 import { Link } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabTwoScreen() {
   return (
-    <ThemedView style={styles.titleContainer}>
-      <Link href="/profile" asChild>
-        <TouchableOpacity>
-          <ThemedText type="title">Explore Page</ThemedText>
-        </TouchableOpacity>
-      </Link>
-    </ThemedView>
+    <SafeAreaView style={styles.safeArea}>
+      <ThemedView style={styles.titleContainer}>
+        <Link href="/profile" asChild>
+          <TouchableOpacity>
+            <ThemedText type="title">Explore Page</ThemedText>
+          </TouchableOpacity>
+        </Link>
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
