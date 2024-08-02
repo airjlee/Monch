@@ -5,6 +5,7 @@ import { ThemedView } from '@/components/ThemedView';
 import PostPage, { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
 import { Stack } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import PostModal from '@/components/individualPost'
 import ExploreHeader from '@/components/ExploreHeader';
 
