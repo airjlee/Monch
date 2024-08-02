@@ -8,6 +8,11 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { AuthProvider } from '@/hooks/AuthContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { auth } from './firebaseConfig';
+import { Ionicons } from '@expo/vector-icons';
+import Colors from '@/constants/Colors';
+import ModalHeaderText from '@/components/ModalHeaderText';
+import React from 'react';
+import { TouchableOpacity, Text } from 'react-native';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -36,6 +41,28 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(post)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(modals)/search"
+            options={{
+              presentation: 'transparentModal',
+              animation: 'fade',
+              headerTransparent: true,
+              headerTitle: "",
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => router.back()}
+                  style={{
+                    backgroundColor: '#fff',
+                    borderColor: Colors.grey,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    padding: 4,
+                  }}>
+                  <Ionicons name="close-outline" size={22} />
+                </TouchableOpacity>
+              ),
+            }}
+          />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>

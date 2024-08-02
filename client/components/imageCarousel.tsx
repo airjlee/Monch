@@ -24,20 +24,23 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, onImagePress }) =
     </TouchableOpacity>
   );
 
-  // helps update activeIndex
-  // updates the pagination dots
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index);
     }
   }).current;
 
-  // helps update activeIndex
-  // determines when an item is "viewable"
-  // when the user swipes and 50% of the image is shown, onViewableItemsChanged is called
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 50
   }).current;
+
+  if (images.length === 1) {
+    return (
+      <View style={styles.container}>
+        {renderItem({ item: images[0], index: 0 } as ListRenderItemInfo<string>)}
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -47,11 +50,11 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, onImagePress }) =
         renderItem={renderItem}
         horizontal
         pagingEnabled
-        showsHorizontalScrollIndicator={false} // hides the horizontal scroll indicator
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
         onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig} //determines when an item is "viewable"
-        decelerationRate="fast" // how fast the scroll is
+        viewabilityConfig={viewabilityConfig}
+        decelerationRate="fast"
         snapToInterval={carouselWidth}
         snapToAlignment="center"
       />

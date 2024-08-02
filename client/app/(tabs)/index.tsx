@@ -4,59 +4,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
+import { Stack } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import ImageCarousel from '@/components/imageCarousel';
 import PostModal from '@/components/individualPost'
-
-// dummy post array to intitially represent posts
-// we will write a fetch from server to get actual posts
-const posts: Post[] = [
-  {
-    id: '1',
-    username: 'airjlee',
-    rating: 0.0,
-    restaurantName: "isarn",
-    images: [
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150'],
-    caption: 'fire food',
-
-  },
-  {
-    id: '2',
-    username: 'hemkeshb',
-    rating: 0.0,
-    restaurantName: "",
-    images: [
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150'],
-    caption: 'this was gasssss',
-  },
-  {
-    id: '3',
-    username: 'alexshuozeng',
-    rating: 0.0,
-    restaurantName: "",
-    images: [
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150'],
-    caption: 'ts hitttt',
-  },
-  {
-    id: '4',
-    username: 'ledaniel',
-    rating: 0.0,
-    restaurantName: "",
-    images: [
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150',
-      'https://via.placeholder.com/350x150'],
-    caption: 'yummy',
-  },
-];
+import ExploreHeader from '@/components/ExploreHeader';
 
 const PostItem: React.FC<Post & { onImagePress: (imageIndex: number) => void }> = 
 ({ username, images, caption, rating, restaurantName, onImagePress }) => (
@@ -90,6 +42,7 @@ export default function HomeScreen(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { refresh } = useLocalSearchParams();
+  const [category, setCategory] = useState<string>('Tiny homes');
 
   useEffect(() => {
     handlePostsRetrieve();
@@ -133,10 +86,24 @@ export default function HomeScreen(): React.JSX.Element {
     setModalVisible(true);
   };
 
+  const onDataChanged = (category: string) => {
+    setCategory(category);
+  };
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
-        <SearchBar value={searchQuery} onChangeText={handleSearch} />
+      <ExploreHeader onCategoryChanged={onDataChanged} />
+        <View style={{ flex: 1, marginTop: 90 }}></View>
+      {/* <Stack.Screen
+        options={{
+          header: () => <ExploreHeader onCategoryChanged={onDataChanged} />,
+        }}
+      />
+      
+        */}
+        {/* <SearchBar value={searchQuery} onChangeText={handleSearch} /> */}
         {isLoading ? (
         <ThemedText>Loading...</ThemedText>
       ) : error ? (
@@ -180,7 +147,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   postsContainer: {
-    padding: 16,
+    padding: 20,
   },
   post: {
     marginBottom: 20,
