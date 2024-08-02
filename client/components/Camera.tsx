@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 type CameraProps = {
   onCapture: (uri: string) => void;
@@ -17,19 +18,6 @@ export default function Camera({ onCapture, onClose }: CameraProps) {
   const [latestPhoto, setLatestPhoto] = useState<string | null>(null);
   const cameraRef = useRef<any>(null);
 
-  useEffect(() => {
-    getLatestPhoto();
-  }, [mediaLibraryPermission]);
-
-  const getLatestPhoto = async () => {
-    const { assets } = await MediaLibrary.getAssetsAsync({
-      first: 1,
-      mediaType: 'photo'
-    });
-    if (assets.length > 0) {
-      setLatestPhoto(assets[0].uri);
-    }
-  };
 
   if (!permission || !mediaLibraryPermission) {
     return <View />;
@@ -81,17 +69,13 @@ export default function Camera({ onCapture, onClose }: CameraProps) {
           </TouchableOpacity>
         </View>
         <View style={styles.bottomContainer}>
-          {latestPhoto && (
             <TouchableOpacity
               style={styles.thumbnailContainer}
               onPress={openCameraRoll}
             >
-              <Image
-                source={{ uri: latestPhoto }}
-                style={styles.thumbnail}
-              />
+              <Ionicons  size={40} color="white" name="image" />
             </TouchableOpacity>
-          )}
+          
           <TouchableOpacity style={styles.captureButton} onPress={takePhoto}>
             <View style={styles.captureButtonInner} />
           </TouchableOpacity>
@@ -137,14 +121,12 @@ const styles = StyleSheet.create({
   },
   thumbnailContainer: {
     position: 'absolute',
-    bottom: 35,
+    bottom: 45,
     left: 20,
     width: 40,
     height: 40,
-    borderRadius: 10,
+
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'white',
   },
   thumbnail: {
     width: '100%',

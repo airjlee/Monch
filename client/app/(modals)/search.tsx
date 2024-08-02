@@ -64,8 +64,7 @@ const Page = () => {
           <AnimatedTouchableOpacity
             onPress={() => setOpenCard(0)}
             style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}>
+            >
             <Text style={styles.previewText}>Where</Text>
             <Text style={styles.previewdData}>I'm flexible</Text>
           </AnimatedTouchableOpacity>
@@ -78,7 +77,7 @@ const Page = () => {
               <Ionicons style={styles.searchIcon} name="search" size={20} color="#000" />
               <TextInput
                 style={styles.inputField}
-                placeholder="Search destinations"
+                placeholder="Search Restaurants"
                 placeholderTextColor={Colors.grey}
               />
             </View>
@@ -107,8 +106,7 @@ const Page = () => {
           <AnimatedTouchableOpacity
             onPress={() => setOpenCard(1)}
             style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}>
+            >
             <Text style={styles.previewText}>When</Text>
             <Text style={styles.previewdData}>Any week</Text>
           </AnimatedTouchableOpacity>
@@ -139,8 +137,7 @@ const Page = () => {
           <AnimatedTouchableOpacity
             onPress={() => setOpenCard(2)}
             style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}>
+            >
             <Text style={styles.previewText}>Who</Text>
             <Text style={styles.previewdData}>Add guests</Text>
           </AnimatedTouchableOpacity>
