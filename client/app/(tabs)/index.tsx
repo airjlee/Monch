@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Image, TextInput, SafeAreaView, TouchableOpacity, Touchable, TouchableOpacityBase } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Post } from '@/components/Post';
+import PostPage, { Post } from '@/components/Post';
 import { SearchBar } from '@/components/SearchBar';
-import { useLocalSearchParams } from 'expo-router';
-import ImageCarousel from '@/components/imageCarousel';
 import PostModal from '@/components/individualPost'
 
 // dummy post array to intitially represent posts
@@ -58,30 +56,6 @@ const posts: Post[] = [
   },
 ];
 
-const PostItem: React.FC<Post & { onImagePress: (imageIndex: number) => void }> = 
-({ username, images, caption, rating, restaurantName, onImagePress }) => (
-  <View style={styles.post}>
-    <View style={styles.postHeader}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/40' }}
-        style={styles.avatar}
-      />
-      <View style={styles.headerText}>
-        <ThemedText style={styles.username}>{username}</ThemedText>
-        <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
-      </View>
-    </View>
-    <ImageCarousel
-      images={images}
-      onImagePress={onImagePress}
-    />
-    <View style={styles.postContent}>
-      <ThemedText style={styles.rating}>Rating: {rating}</ThemedText>
-      <ThemedText style={styles.postText}>{caption}</ThemedText>
-    </View>
-  </View>
-);
-
 export default function HomeScreen(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -89,7 +63,6 @@ export default function HomeScreen(): React.JSX.Element {
   const [postsArray, setPostsArray] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { refresh } = useLocalSearchParams();
 
   useEffect(() => {
     handlePostsRetrieve();
@@ -141,9 +114,6 @@ export default function HomeScreen(): React.JSX.Element {
         <ThemedText>Loading...</ThemedText>
       ) : error ? (
         <ThemedText>Error: {error}</ThemedText>
-      ) : postsArray.length === 0 ? (
-        <ThemedText>No posts!</ThemedText>
-        
       ) : (
         <FlatList
           // data={posts}
@@ -151,7 +121,7 @@ export default function HomeScreen(): React.JSX.Element {
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
-            <PostItem
+            <PostPage
               {...item}
               onImagePress={(imageIndex) => handleImagePress(index, imageIndex)}
             />
@@ -181,52 +151,5 @@ const styles = StyleSheet.create({
   },
   postsContainer: {
     padding: 16,
-  },
-  post: {
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 25,
-    overflow: 'hidden',
-    backgroundColor: '#fafafa',
-  },
-  postHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  username: {
-    fontWeight: 'bold',
-
-  },
-  postImage: {
-    width: '100%',
-    height: 350,
-  },
-  postContent: {
-    padding: 10,
-  },
-  postText: {
-    fontSize: 16,
-  },
-  headerText: {
-    flex: 1,
-  },
-  restaurantName: {
-    fontSize: 14,
-    color: '#666',
-  },
-  rating: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 5,
   },
 });

@@ -122,8 +122,7 @@ export default function PostScreen () {
   };
 
   return (
-    <SafeAreaView>
-      <ThemedView style={styles.container}>
+    <ThemedView style={styles.container}>
         <TouchableOpacity style={styles.imageContainer} onPress={() => setShowPhotoOptions(true)}>
           {imageUri ? (
             <Image source={{ uri: imageUri }} style={styles.image} />
@@ -164,7 +163,6 @@ export default function PostScreen () {
         {/* </Link> */}
 
       </ThemedView>
-    </SafeAreaView>
   );
 }
 

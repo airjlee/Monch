@@ -55,17 +55,19 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, onImagePress }) =
         snapToInterval={carouselWidth}
         snapToAlignment="center"
       />
-      <View style={styles.pagination}>
-        {images.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.paginationDot,
-              index === activeIndex ? styles.paginationDotActive : null
-            ]}
-          />
-        ))}
-      </View>
+      {images.length > 1 && (
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex ? styles.paginationDotActive : null
+              ]}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 };
