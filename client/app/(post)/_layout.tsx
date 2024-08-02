@@ -1,8 +1,10 @@
 import React from 'react';
-import { Stack, Link } from 'expo-router';
+import { Stack, Link, useRouter} from 'expo-router';
 import { TouchableOpacity, Text } from 'react-native';
 
+
 export default function PostLayout() {
+  const router = useRouter();
   return (
     <Stack
       screenOptions={{
@@ -22,6 +24,7 @@ export default function PostLayout() {
           title: 'New Post',
         }}
       />
+      
     </Stack>
   );
 }
