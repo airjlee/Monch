@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import ImageCarousel from '@/components/imageCarousel';
-
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export type Post = {
   id: string;
@@ -54,25 +54,22 @@ const interpolateColor = (rating: number) => {
 const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, rating, images, caption, onImagePress }) => {
   return (
     <View style={styles.post}>
-    <View style={styles.postHeader}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/40' }}
-        style={styles.avatar}
-      />
-      <View style={styles.headerText}>
-        <ThemedText style={styles.username}>{username}</ThemedText>
+      <View style={styles.headerContainer}>
         <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
       </View>
-      <View style={[styles.ratingContainer, { backgroundColor: interpolateColor(rating) }]}>
-        <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+      <View style={styles.imageContainer}>
+        <ImageCarousel
+          images={images}
+          onImagePress={onImagePress}
+        />
+        <View style={[styles.ratingContainer, { backgroundColor: interpolateColor(rating) }]}>
+          <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+        </View>
+        <TouchableOpacity style={styles.heartIconContainer}>
+          <Icon name="hearto" size={24} color="#fff" />
+        </TouchableOpacity>
       </View>
-    </View>
-    <ImageCarousel
-      images={images}
-      onImagePress={onImagePress}
-    />
-    <View style={styles.postsContainer}>
-        <Text style={styles.username}>{username}</Text>
+      <View style={styles.postContent}>
         <Text style={styles.caption}>{caption}</Text>
       </View>
     </View>
@@ -80,73 +77,157 @@ const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, ratin
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  postsContainer: {
-    padding: 16,
-  },
   post: {
     marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 25,
+    borderRadius: 10,
     overflow: 'hidden',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#fff',
   },
-  postHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  username: {
-    fontWeight: 'bold',
-  },
-  postImage: {
-    width: '100%',
-    height: 350,
-  },
-  postContent: {
-    padding: 10,
-  },
-  postText: {
-    fontSize: 16,
-  },
-  headerText: {
-    flex: 1,
+  headerContainer: {
+    paddingBottom: 5,
   },
   restaurantName: {
-    fontSize: 14,
-    color: '#666',
-  },
-  rating: {
-    fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 5,
+    fontSize: 22,
+    color: '#000',
+  },
+  imageContainer: {
+    position: 'relative',
   },
   ratingContainer: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 15,
-    paddingVertical: 2,
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    borderRadius: 20,
+    paddingVertical: 5,
     paddingHorizontal: 10,
   },
   ratingText: {
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: 'bold',
     color: '#000',
+  },
+  heartIconContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    borderRadius: 50,
+    padding: 5,
+  },
+  postContent: {
+    paddingTop: 5,
+  },
+  username: {
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   caption: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#000',
+    paddingLeft: 5,
   },
 });
+
+// old post comp
+// const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, rating, images, caption, onImagePress }) => {
+//   return (
+//     <View style={styles.post}>
+//     <View style={styles.postHeader}>
+//       <Image
+//         source={{ uri: 'https://via.placeholder.com/40' }}
+//         style={styles.avatar}
+//       />
+//       <View style={styles.headerText}>
+//         <ThemedText style={styles.username}>{username}</ThemedText>
+//         <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
+//       </View>
+//       <View style={[styles.ratingContainer, { backgroundColor: interpolateColor(rating) }]}>
+//         <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+//       </View>
+//     </View>
+//     <ImageCarousel
+//       images={images}
+//       onImagePress={onImagePress}
+//     />
+//     <View style={styles.postsContainer}>
+//         <Text style={styles.username}>{username}</Text>
+//         <Text style={styles.caption}>{caption}</Text>
+//       </View>
+//     </View>
+//   );
+// };
+
+// old post style
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//   },
+//   postsContainer: {
+//     padding: 16,
+//   },
+//   post: {
+//     marginBottom: 20,
+//     borderWidth: 1,
+//     borderColor: '#ddd',
+//     borderRadius: 25,
+//     overflow: 'hidden',
+//     backgroundColor: '#fafafa',
+//   },
+//   postHeader: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     padding: 10,
+//     borderBottomWidth: 1,
+//     borderColor: '#ddd',
+//   },
+//   avatar: {
+//     width: 40,
+//     height: 40,
+//     borderRadius: 20,
+//     marginRight: 10,
+//   },
+//   username: {
+//     fontWeight: 'bold',
+//   },
+//   postImage: {
+//     width: '100%',
+//     height: 350,
+//   },
+//   postContent: {
+//     padding: 10,
+//   },
+//   postText: {
+//     fontSize: 16,
+//   },
+//   headerText: {
+//     flex: 1,
+//   },
+//   restaurantName: {
+//     fontSize: 14,
+//     color: '#666',
+//   },
+//   rating: {
+//     fontSize: 14,
+//     fontWeight: 'bold',
+//     marginBottom: 5,
+//   },
+//   ratingContainer: {
+//     borderRadius: 15,
+//     paddingVertical: 2,
+//     paddingHorizontal: 10,
+//   },
+//   ratingText: {
+//     fontSize: 16,
+//     color: '#000',
+//   },
+//   caption: {
+//     fontSize: 14,
+//     color: '#000',
+//   },
+//   imageContainer: {
+//     position: 'relative',
+//   },
+// });
 
 export default PostPage;
