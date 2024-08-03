@@ -8,7 +8,6 @@ import { Stack } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import PostModal from '@/components/individualPost'
 import ExploreHeader from '@/components/ExploreHeader';
-
 export default function HomeScreen(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,7 +17,6 @@ export default function HomeScreen(): React.JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const { refresh } = useLocalSearchParams();
   const [category, setCategory] = useState<string>('Tiny homes');
-
   useEffect(() => {
     handlePostsRetrieve();
   }, []);
@@ -50,27 +48,22 @@ export default function HomeScreen(): React.JSX.Element {
       setIsLoading(false);
     }
   }
-
   const handleSearch = (text: string) => {
     setSearchQuery(text);
     // Implement search logic here
   };
-
   const handleImagePress = (postIndex: number, imageIndex: number) => {
     setSelectedPostIndex(postIndex);
     setModalVisible(true);
   };
-
   const onDataChanged = (category: string) => {
     setCategory(category);
   };
-
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
       <ExploreHeader onCategoryChanged={onDataChanged} />
-        <View style={{ flex: 1, marginTop: 90 }}></View>
+      {postsArray.length !== 1 && <View style={{ flex: 1, marginTop: 90 }}></View>}
       {/* <Stack.Screen
         options={{
           header: () => <ExploreHeader onCategoryChanged={onDataChanged} />,
@@ -108,7 +101,6 @@ export default function HomeScreen(): React.JSX.Element {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
