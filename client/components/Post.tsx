@@ -25,6 +25,32 @@ type PostPageProps = {
 
 const { width: screenWidth } = Dimensions.get('window');
 
+const interpolateColor = (rating: number) => {
+  const red = { r: 255, g: 0, b: 0 };
+  const yellow = { r: 255, g: 255, b: 0 };
+  const green = { r: 0, g: 255, b: 0 };
+
+  let result;
+
+  if (rating <= 5) {
+    const ratio = rating / 5;
+    result = {
+      r: Math.round(red.r + ratio * (yellow.r - red.r)),
+      g: Math.round(red.g + ratio * (yellow.g - red.g)),
+      b: Math.round(red.b + ratio * (yellow.b - red.b)),
+    };
+  } else {
+    const ratio = (rating - 5) / 5;
+    result = {
+      r: Math.round(yellow.r + ratio * (green.r - yellow.r)),
+      g: Math.round(yellow.g + ratio * (green.g - yellow.g)),
+      b: Math.round(yellow.b + ratio * (green.b - yellow.b)),
+    };
+  }
+
+  return `rgb(${result.r}, ${result.g}, ${result.b})`;
+};
+
 const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, rating, images, caption, onImagePress }) => {
   return (
     <View style={styles.post}>
@@ -37,7 +63,7 @@ const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, ratin
         <ThemedText style={styles.username}>{username}</ThemedText>
         <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
       </View>
-      <View style={styles.ratingContainer}>
+      <View style={[styles.ratingContainer, { backgroundColor: interpolateColor(rating) }]}>
         <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
       </View>
     </View>
