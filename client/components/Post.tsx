@@ -33,7 +33,7 @@ const interpolateColor = (rating: number) => {
   let result;
 
   if (rating <= 5) {
-    const ratio = rating / 5;
+    const ratio = (rating - 1) / 4;
     result = {
       r: Math.round(red.r + ratio * (yellow.r - red.r)),
       g: Math.round(red.g + ratio * (yellow.g - red.g)),
@@ -50,6 +50,7 @@ const interpolateColor = (rating: number) => {
 
   return `rgb(${result.r}, ${result.g}, ${result.b})`;
 };
+
 
 const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, rating, images, caption, onImagePress }) => {
   return (
