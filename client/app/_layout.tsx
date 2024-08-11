@@ -14,6 +14,22 @@ import ModalHeaderText from '@/components/ModalHeaderText';
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 
+const customLightTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#121212', 
+  },
+};
+
+const customDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: '#121212', 
+  },
+};
+
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

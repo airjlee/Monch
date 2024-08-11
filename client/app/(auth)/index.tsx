@@ -14,7 +14,6 @@ export default function Login() {
 
   const router = useRouter();
 
-  //this doesn't work for some reason
   useEffect(() => {     
     onAuthStateChanged(auth, (user) => {       
         console.log("USER: " + user + " " + user?.email);       
