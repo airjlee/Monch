@@ -15,8 +15,31 @@ export default function Signup() {
   const { setUser } = useAuth();
   const router = useRouter();
 
+  const checkUsernameAvailability = async (username: string) => {
+    try {
+      const response = await fetch('REPLACE'/* url goes here*/, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Username already exists');
+      }
+
+      return true;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('Error checking username availability');
+    }
+  };
+
   const handleSignup = async () => {
-    if (!email || !password || !confirmPassword) {
+    if (!email || !password || !confirmPassword || !username) {
       setError('Please fill in all fields');
       return;
     }
@@ -27,6 +50,8 @@ export default function Signup() {
     setLoading(true);
     setError(null);
     try {
+      await checkUsernameAvailability(username);
+
       const result = await createUserWithEmailAndPassword(auth, email, password);
       
       await updateProfile(result.user, {
@@ -36,7 +61,11 @@ export default function Signup() {
       setUser(result.user);
       router.replace('/(tabs)');
     } catch (error) {
-      setError('Error signing up. Please try again.');
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Error signing up. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
