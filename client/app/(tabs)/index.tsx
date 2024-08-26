@@ -101,14 +101,15 @@ export default function HomeScreen(): React.JSX.Element {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#121212'
+    backgroundColor: '#FFFFFF'
   },
   container: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#FFFFFF',
   },
   postsContainer: {
     padding: 20,

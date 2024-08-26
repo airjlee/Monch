@@ -56,21 +56,28 @@ const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, ratin
   return (
     <View style={styles.post}>
       <View style={styles.headerContainer}>
-        <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
+        <View style={styles.userInfoContainer}>
+          <Image
+            source={{ uri: 'https://via.placeholder.com/40' }}
+            style={styles.avatar}
+          />
+          <ThemedText style={styles.username}>{username}</ThemedText>
+        </View>
+        <View style={[styles.ratingContainer, { backgroundColor: interpolateColor(rating) }]}>
+          <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+        </View>
       </View>
       <View style={styles.imageContainer}>
         <ImageCarousel
           images={images}
           onImagePress={onImagePress}
         />
-        <View style={[styles.ratingContainer, { backgroundColor: interpolateColor(rating) }]}>
-          <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
-        </View>
         <TouchableOpacity style={styles.heartIconContainer}>
           <Icon name="hearto" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
       <View style={styles.postContent}>
+        <ThemedText style={styles.restaurantName}>{restaurantName}</ThemedText>
         <Text style={styles.caption}>{caption}</Text>
       </View>
     </View>
@@ -86,6 +93,13 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingBottom: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', // This moves the rating to the right side
+  },
+  userInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   restaurantName: {
     fontWeight: 'bold',
@@ -96,9 +110,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   ratingContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
     borderRadius: 20,
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -126,6 +137,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#000',
     paddingLeft: 5,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
   },
 });
 

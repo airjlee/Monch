@@ -15,9 +15,9 @@ export default function Signup() {
   const { setUser } = useAuth();
   const router = useRouter();
 
-  const checkUsernameAvailability = async (username: string) => {
+  const checkUsernameAvailability = async (username: string, setError: React.Dispatch<React.SetStateAction<string | null>>) => {
     try {
-      const response = await fetch('REPLACE'/* url goes here*/, {
+      const response = await fetch('REPLACE'/* url goes here */, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,15 +26,18 @@ export default function Signup() {
       });
 
       if (!response.ok) {
-        throw new Error('Username already exists');
+        setError('Username already exists');
+        return false;
       }
 
       return true;
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        setError(error.message);
+      } else {
+        setError('Error checking username availability');
       }
-      throw new Error('Error checking username availability');
+      return false;
     }
   };
 
@@ -50,7 +53,8 @@ export default function Signup() {
     setLoading(true);
     setError(null);
     try {
-      await checkUsernameAvailability(username);
+      const isUsernameAvailable = await checkUsernameAvailability(username, setError);
+      if (!isUsernameAvailable) return;
 
       const result = await createUserWithEmailAndPassword(auth, email, password);
       
