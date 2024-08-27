@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Image, StyleSheet, Dimensions, FlatList, ListRenderItemInfo, TouchableOpacity } from 'react-native';
 
 const { width: screenWidth } = Dimensions.get('window');
-const containerPadding = 16;
+const containerPadding = 20;
 const carouselWidth = screenWidth - (containerPadding * 2);
 
 interface ImageCarouselProps {
@@ -86,6 +86,8 @@ const styles = StyleSheet.create({
     height: 350,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 25,
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
@@ -109,5 +111,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
 
 export default ImageCarousel;

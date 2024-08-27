@@ -87,7 +87,6 @@ const PostPage: React.FC<PostPageProps> = ({ id, username, restaurantName, ratin
 const styles = StyleSheet.create({
   post: {
     marginBottom: 20,
-    borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: '#fff',
   },
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // This moves the rating to the right side
+    justifyContent: 'space-between',
   },
   userInfoContainer: {
     flexDirection: 'row',
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
   },
   restaurantName: {
     fontWeight: 'bold',
-    fontSize: 22,
+    fontSize: 18,
     color: '#000',
   },
   imageContainer: {
@@ -136,7 +135,6 @@ const styles = StyleSheet.create({
   caption: {
     fontSize: 12,
     color: '#000',
-    paddingLeft: 5,
   },
   avatar: {
     width: 40,
