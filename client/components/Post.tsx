@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
   },
   username: {
     fontWeight: 'bold',
-    marginBottom: 5,
   },
   caption: {
     fontSize: 12,
