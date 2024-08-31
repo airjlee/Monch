@@ -1,11 +1,11 @@
-package com.example.server.model;
+package com.example.server.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,9 +17,16 @@ public class Post {
     private String username;
     private double rating;
     private String restaurantName;
-    private String[] images;
+
+    // needs database
+    @ElementCollection
+    @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "image_url")
+    private List<String> images;
+
     private String caption;
 
+    //needs database
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;

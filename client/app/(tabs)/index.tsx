@@ -8,6 +8,8 @@ import { Stack } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import PostModal from '@/components/individualPost'
 import ExploreHeader from '@/components/ExploreHeader';
+import axios from 'axios';
+
 export default function HomeScreen(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,21 +23,24 @@ export default function HomeScreen(): React.JSX.Element {
     handlePostsRetrieve();
   }, []);
   
+  // change to show reviews of only following
   const handlePostsRetrieve = async () => {
-    try{
+    try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8080/api/posts", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      if(!response.ok){
-        throw new Error("not ok");
-      }
-      const data = await response.json();
-      console.log("POST SUCCESS", data);
-      setPostsArray(data);
+      // const response = await fetch("http://localhost:8080/api/posts", {
+      //   method: "GET",
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      // })
+      // if(!response.ok){
+      //   throw new Error("not ok");
+      // }
+      // const data = await response.json();
+      // console.log("POST SUCCESS", data);
+      // setPostsArray(data);
+      const response = await axios.get('http://localhost:8080/api/posts');
+      setPostsArray(response.data);
       setError(null);
     } catch (error) {
       console.error("error: ", error);
@@ -48,17 +53,21 @@ export default function HomeScreen(): React.JSX.Element {
       setIsLoading(false);
     }
   }
+
   const handleSearch = (text: string) => {
     setSearchQuery(text);
     // Implement search logic here
   };
+
   const handleImagePress = (postIndex: number, imageIndex: number) => {
     setSelectedPostIndex(postIndex);
     setModalVisible(true);
   };
+
   const onDataChanged = (category: string) => {
     setCategory(category);
   };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>

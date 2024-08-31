@@ -1,10 +1,11 @@
 package com.example.server.controller;
 
+import com.example.server.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.server.model.Post;
-import com.example.server.repository.PostRepository;
+import com.example.server.entity.Post;
 
 import java.util.List;
 
@@ -13,33 +14,36 @@ import java.util.List;
 public class PostController {
 
     @Autowired
-    private PostRepository postRepository;
+    private PostService postService;
 
-    @GetMapping
-    public List<Post> getAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc();
+    @GetMapping("/following/{userId}")
+    public ResponseEntity<List<Post>> getPostsFromFollowing(@PathVariable Long userId) {
+        List<Post> posts = postService.getPostsFromFollowing(userId);
+        return ResponseEntity.ok(posts);
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postRepository.save(post);
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        Post createdPost = postService.createPost(post);
+        return ResponseEntity.ok(createdPost);
     }
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+        Post post = postService.getPostById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+        return ResponseEntity.ok(post);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
-        post.setCaption(postDetails.getCaption());
-        return postRepository.save(post);
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
+        Post updatedPost = postService.updatePost(id, postDetails);
+        return ResponseEntity.ok(updatedPost);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
-        postRepository.delete(post);
+    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        return ResponseEntity.ok().build();
     }
 }
